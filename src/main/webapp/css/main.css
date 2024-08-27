@@ -65,4 +65,11 @@ a{
     background-color:#e1e1e1 ;
     padding-top: 100px;
 }
-/*changeInformation*/
+/*addproducts*/
+.contain{
+    width: 100%;
+    background-color: var(--primary-color);
+}
+.contain__row{
+    width: 50%;
+}

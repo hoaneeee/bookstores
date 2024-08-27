@@ -11,7 +11,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add-products</title>
-    <link rel="stylesheet" href="../css/font/fontawesome-free-6.4.0-web/css/all.min.css">
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -25,8 +24,9 @@
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../css/font/fontawesome-free-6.4.0-web/css/all.min.css">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/font/fontawesome-free-6.4.0-web/css/all.min.css">
+
 </head>
 <body>
 <div class="contain">
@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="contain__row">
-            <label for="moTa" class="contain__label"></label>
+            <label for="moTa" class="contain__label">mô tả</label>
             <input class="contain__mota" id="moTa" name="moTa">
         </div>
     </form>

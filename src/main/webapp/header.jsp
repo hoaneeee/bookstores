@@ -11,7 +11,7 @@
             + request.getContextPath();
 %>
 <link rel="stylesheet" href="./css/font/fontawesome-free-6.4.0-web/css/all.min.css">
-<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="main.css">
 <nav class="navbar navbar-expand-lg bg-body-tertiary padding-background">
     <div class="container-fluid background-header">
         <a class="navbar-brand" href="<%=url%>/index.jsp">
@@ -71,9 +71,9 @@
                             <%
                                 if ("admin".equals(khachHang.getVaiTro())) {
                             %>
-                            <li><a class="dropdown-item" href="<%=url%>/admin/addProducts.jsp">Kho sản phẩm </a></li>
+                            <li><a class="dropdown-item" href="<%=url%>#">Kho sản phẩm </a></li>
                             <li><a class="dropdown-item" href="<%=url%>#">Xóa sản phẩm  </a></li>
-                            <li><a class="dropdown-item" href="<%=url%>#">Thêm sản phẩm</a></li>
+                            <li><a class="dropdown-item" href="<%=url%>/admin/addProducts.jsp">Thêm sản phẩm</a></li>
                             <li><a class="dropdown-item" href="<%=url%>#">Quản lý người dùng</a></li>
                             <li><a class="dropdown-item" href="<%=url%>#">Quản lý đơn hàng</a></li>
                             <li><hr class="dropdown-divider"></li>
