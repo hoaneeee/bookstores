@@ -71,7 +71,7 @@
                             <%
                                 if ("admin".equals(khachHang.getVaiTro())) {
                             %>
-                            <li><a class="dropdown-item" href="<%=url%>#">Kho sản phẩm </a></li>
+                            <li><a class="dropdown-item" href="<%=url%>/admin/addProducts.jsp">Kho sản phẩm </a></li>
                             <li><a class="dropdown-item" href="<%=url%>#">Xóa sản phẩm  </a></li>
                             <li><a class="dropdown-item" href="<%=url%>#">Thêm sản phẩm</a></li>
                             <li><a class="dropdown-item" href="<%=url%>#">Quản lý người dùng</a></li>
