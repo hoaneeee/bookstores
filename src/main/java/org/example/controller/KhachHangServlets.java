@@ -1,6 +1,9 @@
 package org.example.controller;
 
 import database.khachHangDAO;
+import database.sanPhamDAO;
+import database.tacGiaDAO;
+import database.theLoaiDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import maHoa.maHoa;
 import model.khachHang;
+import model.sanPham;
+import model.tacGia;
+import model.theLoai;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -31,6 +37,8 @@ public class KhachHangServlets extends HttpServlet {
             changePassword(req, resp);
         } else if (hanhDong.equals("changeInformation")) {
             changeInformation(req, resp);
+        } else if (hanhDong.equals("Thêm sản phẩm")) {
+            addProducts(req,resp);
         }
     }
 
@@ -92,7 +100,7 @@ public class KhachHangServlets extends HttpServlet {
             url = "/khachhang/register.jsp";
         } else {
             Random rd = new Random();
-            String maKhachHang = System.currentTimeMillis() + rd.nextInt(1000) + "";
+            String maKhachHang =rd.nextInt(1000) + "";
             String vaiTro = "khach_hang";
             khachHang kh = new khachHang(maKhachHang, tenDangNhap, matKhau, hoVaTen, gioiTinh, Date.valueOf(ngaySinh), diaChiKhachHang, diaChiNhanHang, diaChiMuaHang, dienThoai, email, dongYNhanMail != null,vaiTro);
             khachHangDAO.insert(kh);
@@ -221,6 +229,58 @@ public class KhachHangServlets extends HttpServlet {
                 }
             }
         }
+        RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+        rd.forward(req, resp);
+    }
+    private  void addProducts(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException{
+        String maSanPham= req.getParameter("maSanPham");
+        String tenSanPham = req.getParameter("tenSanPham");
+        String maTacGia = req.getParameter("maTacGia");
+        String namXuatBanstr = req.getParameter("namXuatBan");
+        String giaNhapstr = req.getParameter("giaNhap");
+        String giaGocstr = req.getParameter("giaGoc");
+        String giaBanstr= req.getParameter("giaBan");
+        String soLuongstr= req.getParameter("soLuong");
+        String maTheLoai= req.getParameter("maTheLoai");
+        String ngonNgu= req.getParameter("ngonNgu");
+        String moTa= req.getParameter("moTa");
+
+        req.setAttribute("maSanPham",maSanPham);
+        req.setAttribute("tenSanPham",tenSanPham);
+        req.setAttribute("maTacGia",maTacGia);
+        req.setAttribute("namXuatBan",namXuatBanstr);
+        req.setAttribute("giaNhap",giaNhapstr);
+        req.setAttribute("giaGoc",giaGocstr);
+        req.setAttribute("giaBan",giaBanstr);
+        req.setAttribute("soLuong",soLuongstr);
+        req.setAttribute("maTheLoai",maTheLoai);
+        req.setAttribute("ngonNgu",ngonNgu);
+        req.setAttribute("moTa",moTa);
+
+        int namXuatban = Integer.parseInt(namXuatBanstr);
+        double giaNhap= Double.parseDouble(giaNhapstr);
+        double giaGoc= Double.parseDouble(giaGocstr);
+        double giaBan= Double.parseDouble(giaBanstr);
+        int soLuong= Integer.parseInt(soLuongstr);
+
+        tacGia tacGia= (new tacGiaDAO().selectById(new tacGia(maTacGia,"",null,"")));
+        theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(maTheLoai,"")));
+        String url= "";
+        String baoLoi= "";
+        sanPhamDAO sanPhamDAO= new sanPhamDAO();
+        if (maSanPham==null || maSanPham.trim().isEmpty()){
+            baoLoi+="ma san pham trong ";
+        } else if (sanPhamDAO.checkMASP(maSanPham)) {
+            baoLoi+="ma san pham nay da ton tai";
+        }
+        if (!baoLoi.isEmpty()){
+            url="/admin/addProducts.jsp";
+        }else {
+            sanPham sanPham= new sanPham(maSanPham,tenSanPham,tacGia,namXuatban,giaNhap,giaGoc,giaBan,soLuong,theLoai,ngonNgu,moTa);
+            sanPhamDAO.insert(sanPham);
+            url="/success.jsp";
+        }
+        req.setAttribute("baoLoi",baoLoi);
         RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
         rd.forward(req, resp);
     }

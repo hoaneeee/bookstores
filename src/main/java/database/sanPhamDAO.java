@@ -207,4 +207,23 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
         }
         return ketqua;
     }
+    public boolean checkMASP(String maSanPham){
+        boolean ketqua= false;
+        try {
+            Connection con = JDBCutil.getConnection();
+            String sql= "select * from sanpham where ma_san_pham=?";
+            PreparedStatement st= con.prepareStatement(sql);
+            st.setString(1,maSanPham);
+
+            System.out.println(sql);
+            ResultSet rs =st.executeQuery();
+            while (rs.next()){
+                return true;
+            }
+            JDBCutil.closeConnection(con);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return  ketqua;
+    }
 }

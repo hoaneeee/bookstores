@@ -48,8 +48,10 @@ public class theLoaiDAO implements DAOInterface<theLoai>{
         try{
             Connection con= JDBCutil.getConnection();
 
-            String sql = "select * from theloai where ma_the_loai";
+            String sql = "select * from theloai where ma_the_loai=?";
             PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1,t.getMaTheLoai());
 
             System.out.println(sql);
             ResultSet rs = ps.executeQuery();
