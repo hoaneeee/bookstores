@@ -34,11 +34,12 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
                 String matheloai = rs.getString("ma_the_loai");
                 String ngonngu = rs.getString("ngon_ngu");
                 String mota = rs.getString("mo_ta");
+                String themAnh= rs.getString("them_anh");
 
                 tacGia tacGia= (new tacGiaDAO().selectById(new tacGia(matacgia,"",null,"")));
                 theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(matheloai, "")));
 
-                sanPham sp= new sanPham(masanpham,tensanpham,tacGia,namxuatban,gianhap,giagoc,giaban,soluong,theLoai,ngonngu,mota);
+                sanPham sp= new sanPham(masanpham,tensanpham,tacGia,namxuatban,gianhap,giagoc,giaban,soluong,theLoai,ngonngu,mota,themAnh);
                 ketQua.add(sp);
             }
 
@@ -74,11 +75,12 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
                 String matheloai = rs.getString("ma_the_loai");
                 String ngonngu = rs.getString("ngon_ngu");
                 String mota = rs.getString("mo_ta");
+                String themAnh= rs.getString("them_anh");
 
                 tacGia tacGia= (new tacGiaDAO().selectById(new tacGia(matacgia,"",null,"")));
                 theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(matheloai, "")));
 
-                ketqua = new sanPham(masanpham,tensanpham,tacGia,namxuatban,gianhap,giagoc,giaban,soluong,theLoai,ngonngu,mota);
+                ketqua = new sanPham(masanpham,tensanpham,tacGia,namxuatban,gianhap,giagoc,giaban,soluong,theLoai,ngonngu,mota,themAnh);
 
                 break;
             }
@@ -96,8 +98,8 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
             Connection con = JDBCutil.getConnection();
 
             String sql = "insert into sanpham (ma_san_pham,ten_san_pham, ma_tac_gia, nam_xuat_ban," +
-                    " gia_nhap, gia_goc, gia_ban, so_luong, ma_the_loai, ngon_ngu, mo_ta)" +
-                    " values (?,?,?,?,?,?,?,?,?,?,?) ";
+                    " gia_nhap, gia_goc, gia_ban, so_luong, ma_the_loai, ngon_ngu, mo_ta,them_anh)" +
+                    " values (?,?,?,?,?,?,?,?,?,?,?,?) ";
             PreparedStatement st = con.prepareStatement(sql);
 
             st.setString(1, t.getMaSanPham());
@@ -111,6 +113,7 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
             st.setString(9, t.getTheLoai().getMaTheLoai());
             st.setString(10, t.getNgonNgu());
             st.setString(11, t.getMoTa());
+            st.setString(12, t.getThemAnh());
 
             ketqua = st.executeUpdate();
 
@@ -177,7 +180,7 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
             Connection con = JDBCutil.getConnection();
 
             String sql= "UPDATE sanpham " + " SET " + "ten_san_pham=?, ma_tac_gia=?, nam_xuat_ban=?, gia_nhap=?, gia_goc=?, "
-                    + "gia_ban=?, so_luong=?, ma_the_loai=?, ngon_ngu=?, mo_ta=?" + " WHERE ma_san_pham=?";
+                    + "gia_ban=?, so_luong=?, ma_the_loai=?, ngon_ngu=?, mo_ta=?, them_anh=?" + " WHERE ma_san_pham=?";
             PreparedStatement st= con.prepareStatement(sql);
 
             st.setString(1, t.getTenSanPham());
@@ -190,7 +193,8 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
             st.setString(8, t.getTheLoai().getMaTheLoai());
             st.setString(9, t.getNgonNgu());
             st.setString(10, t.getMoTa());
-            st.setString(11, t.getMaSanPham());
+            st.setString(11, t.getThemAnh());
+            st.setString(12, t.getMaSanPham());
 
 
             System.out.println(sql);

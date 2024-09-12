@@ -81,8 +81,8 @@
         String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
                 + request.getContextPath();
     %>
-    <form class="contain__form" action="<%=url%>/khach-hang" method="post">
-        <input type="hidden" name="hanhdong" value="Thêm sản phẩm">
+    <form class="contain__form" action="<%=url%>/admin-addProducts" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="active" value="them san pham">
         <div class="contain__row">
             <div class="contain__row-input">
                 <label for="maSanPham" class="contain__label">Mã sản phẩm </label>
@@ -147,6 +147,11 @@
             <label for="moTa" class="contain__label">mô tả</label>
             <input class="contain__mota" id="moTa" name="moTa" value="<%=moTa%>">
         </div>
+        <div class="contain__row">
+            <label for="themAnh" class="contain__label">Thêm ảnh</label>
+            <input type="file" class="contain__input" id="themAnh" name="themAnh" value="">
+        </div>
+
         <div class="contain__row">
             <button type="submit">them san pham</button>
         </div>

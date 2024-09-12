@@ -80,7 +80,7 @@
                     + request.getContextPath();
         %>
         <form   class="form" action="<%=url%>/khach-hang" method="post">
-            <input type="hidden" name="hanhdong" value="changeInformation">
+            <input type="hidden" name="hanhDong" value="changeInformation">
 
             <div class="row">
                 <div class="col-sm-6">

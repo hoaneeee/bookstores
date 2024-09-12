@@ -12,12 +12,12 @@ public class sanPham {
     private theLoai theLoai;;
     private String ngonNgu;
     private String moTa;
+    private String themAnh;
 
     public sanPham() {
     }
 
-    public sanPham(String maSanPham, String tenSanPham, tacGia tacGia, int namXuatBan, double giaNhap, double giaGoc,
-                   double giaBan, int soLuong, theLoai theLoai, String ngonNgu, String moTa) {
+    public sanPham(String maSanPham, String tenSanPham, model.tacGia tacGia, int namXuatBan, double giaNhap, double giaGoc, double giaBan, int soLuong, model.theLoai theLoai, String ngonNgu, String moTa, String themAnh) {
         this.maSanPham = maSanPham;
         this.tenSanPham = tenSanPham;
         this.tacGia = tacGia;
@@ -29,6 +29,7 @@ public class sanPham {
         this.theLoai = theLoai;
         this.ngonNgu = ngonNgu;
         this.moTa = moTa;
+        this.themAnh = themAnh;
     }
 
     public String getMaSanPham() {
@@ -47,11 +48,11 @@ public class sanPham {
         this.tenSanPham = tenSanPham;
     }
 
-    public tacGia getTacGia() {
+    public model.tacGia getTacGia() {
         return tacGia;
     }
 
-    public void setTacGia(tacGia tacGia) {
+    public void setTacGia(model.tacGia tacGia) {
         this.tacGia = tacGia;
     }
 
@@ -95,11 +96,11 @@ public class sanPham {
         this.soLuong = soLuong;
     }
 
-    public theLoai getTheLoai() {
+    public model.theLoai getTheLoai() {
         return theLoai;
     }
 
-    public void setTheLoai(theLoai theLoai) {
+    public void setTheLoai(model.theLoai theLoai) {
         this.theLoai = theLoai;
     }
 
@@ -119,6 +120,11 @@ public class sanPham {
         this.moTa = moTa;
     }
 
+    public String getThemAnh() {
+        return themAnh;
+    }
 
-
+    public void setThemAnh(String themAnh) {
+        this.themAnh = themAnh;
+    }
 }

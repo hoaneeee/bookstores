@@ -55,7 +55,7 @@
                 + request.getContextPath();
     %>
     <form action="<%=url%>/khach-hang" method="POST">
-        <input type="hidden" name="hanhdong" value="changePassword">
+        <input type="hidden" name="hanhDong" value="changePassword">
 
         <div class="mb-3">
             <label for="matKhauHienTai" class="form-label">Mật khẩu hiện tại</label>

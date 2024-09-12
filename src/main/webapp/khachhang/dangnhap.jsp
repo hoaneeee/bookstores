@@ -39,7 +39,7 @@
 <body>
 <main class="form-signin w-25 m-auto">
     <form class="text-center" action="<%=url%>/khach-hang" method="POST">
-        <input type="hidden" name="hanhdong" value="sign-in">
+        <input type="hidden" name="hanhDong" value="sign-in">
         <img class="mb-3" src="<%=url %>/img/logo.png"
              alt="" width="100" style="padding-top: 30px" >
         <h1 class="h3 mb-3 fw-normal">ĐĂNG NHẬP</h1>

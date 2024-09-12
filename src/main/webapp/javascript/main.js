@@ -17,6 +17,7 @@ function xuLyChonDongY() {
         document.getElementById("submit").style.visibility="hidden";
     }
 }
+
 function redirectToHome(){
     setTimeout(function () {
         window.location.href = "index.jsp";
