@@ -1,4 +1,4 @@
-<%--
+<%@ page import="jakarta.servlet.http.Cookie" %><%--
   Created by IntelliJ IDEA.
   User: Acer
   Date: 04/08/2024
@@ -34,6 +34,20 @@
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
             + request.getContextPath();
+    //Get Cookie
+    Cookie ck[] = request.getCookies();
+    String u = "";
+    String pas ="";
+    if(ck != null){
+        for(Cookie c : ck){
+            if(c.getName().equals("username")){
+                u = c.getValue();
+            }else if(c.getName().equals("password")){
+                pas = c.getValue();
+            }
+        }
+    }
+
 %>
 </head>
 <body>
@@ -53,16 +67,16 @@
 
         </div>
         <div class="form-floating">
-            <input type="text" class="form-control" id="tenDangNhap"
+            <input type="text" class="form-control" id="tenDangNhap" value="<%=u%>"
                    placeholder="Tên đăng nhập" name="tenDangNhap"> <label for="tenDangNhap">Tên đăng nhập</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="matKhau"
+            <input type="password" class="form-control" id="matKhau" value="<%=pas%>"
                    placeholder="Mật khẩu" name="matKhau"> <label for="matKhau">Mật khẩu</label>
         </div>
 
         <div class="checkbox mb-3">
-            <label> <input type="checkbox" value="remember-me">
+            <label> <input id ="remember-me" name ="remember-me" type="checkbox" value="remember-me">
                 Ghi nhớ tài khoản này
             </label>
         </div>

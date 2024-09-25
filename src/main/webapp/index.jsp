@@ -1,4 +1,6 @@
 <%@ page import="model.khachHang" %>
+<%@ page import="jakarta.servlet.http.Cookie" %>
+<%@ page import="org.example.controller.KhachHangServlets" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -21,6 +23,22 @@
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
     integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
     crossorigin="anonymous"></script>
+
+    <%
+        Cookie ck[] = request.getCookies();
+        String u = "";
+        String pas ="";
+        if(ck != null){
+            for(Cookie c : ck){
+                if(c.getName().equals("username")){
+                    u = c.getValue();
+                }else if(c.getName().equals("password")){
+                    pas = c.getValue();
+                }
+            }
+            KhachHangServlets.gI().sign_in(u,pas,session);
+        }
+    %>
 </head>
 <body>
 <%--header--%>

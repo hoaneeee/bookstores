@@ -7,10 +7,7 @@ import database.theLoaiDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 import maHoa.maHoa;
 import model.khachHang;
 import model.sanPham;
@@ -25,6 +22,7 @@ import org.apache.commons.fileupload.servlet.ServletRequestContext;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.FileStore;
 import java.sql.Date;
 import java.util.List;
@@ -54,7 +52,12 @@ public class KhachHangServlets extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
-
+    public static KhachHangServlets ins;
+    public static KhachHangServlets gI(){
+        if(ins == null) ins = new KhachHangServlets();
+        return ins;
+    }
+//dangki
     private void sign_up(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
 
@@ -122,12 +125,56 @@ public class KhachHangServlets extends HttpServlet {
         session.invalidate();
 //        String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
 //                + req.getContextPath();
+        Cookie ck[] = req.getCookies();
+        if(ck != null){
+            for(Cookie c : ck){
+                if(c.getName().equals("username")){
+                    c.setMaxAge(0);
+                    resp.addCookie(c);
+                }else if(c.getName().equals("password")){
+                   c.setMaxAge(0);
+                    resp.addCookie(c);
+                }
+            }
+        }
         resp.sendRedirect("index.jsp");
     }
+    public void sign_in(String u,String p,HttpSession session){
+        khachHang kh = new khachHang();
+        kh.setTenDangNhap(u);
+        p = maHoa.toSHA(p);
+        kh.setMatKhau(p);
+        khachHangDAO dao = new khachHangDAO();
+        khachHang khachHang = dao.selectByIdAndPassword(kh);
 
-    private void sign_in(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String url = "";
+        if (khachHang != null) {
+            session.setAttribute("khachHang", khachHang);
+            url = "/index.jsp";
+        }
+
+    }
+//dangnhap
+    public void sign_in(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String tenDangNhap = req.getParameter("tenDangNhap");
         String matKhau = req.getParameter("matKhau");
+        String rmbMe = req.getParameter("remember-me");
+        if(rmbMe != null){
+            // Lưu Cookie
+            resp.setContentType("text/html");
+            PrintWriter out = resp.getWriter();
+
+            Cookie ckU = new Cookie("username",tenDangNhap);
+            Cookie ckP = new Cookie("password",matKhau);
+
+            ckU.setMaxAge(60 * 60 * 24 * 30);//set theo giây, đây là lưu 1 tháng
+            ckP.setMaxAge(60 * 60 * 24 * 30);
+
+            resp.addCookie(ckU);
+            resp.addCookie(ckP);
+
+            //************
+        }
         matKhau = maHoa.toSHA(matKhau);
 
         khachHang kh = new khachHang();
@@ -138,6 +185,7 @@ public class KhachHangServlets extends HttpServlet {
 
         String url = "";
         if (khachHang != null) {
+
             HttpSession session = req.getSession();
             session.setAttribute("khachHang", khachHang);
             url = "/index.jsp";
@@ -242,7 +290,7 @@ public class KhachHangServlets extends HttpServlet {
         rd.forward(req, resp);
     }
 
-    private void addProducts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+/*    private void addProducts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String themAnh = "";
         try {
             System.out.println(req.getContentType());
@@ -358,5 +406,5 @@ public class KhachHangServlets extends HttpServlet {
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/admin/addProducts.jsp");
             rd.forward(req, resp);
         }
-    }
+    }*/
 }

@@ -33,7 +33,7 @@
 </head>
 <body>
 <%
-    String baoLoi = request.getAttribute("baoLoi") + "";
+    String baoLoi = request.getAttribute("baoLoi")+"";
     baoLoi = (baoLoi.equals("null")) ? "" : baoLoi;
 
 
@@ -84,21 +84,21 @@
         <div class="row">
             <div class="col-sm-6">
                 <h3>Tài khoản</h3>
-                <div class="mb-3">
+                <div class="mb-3">q
                     <label for="tenDangNhap" class="form-label">Tên đăng nhập<span class="red">*</span></label>
-                    <input type="text" class="form-control" id="tenDangNhap" name="tenDangNhap" required="required"
+                    <input type="text" class="form-control" id="tenDangNhap" name="tenDangNhap"
                            value="<%=tenDangNhap%>">
                 </div>
                 <div class="mb-3">
                     <label for="matKhau" class="form-label">Mật khẩu<span class="red">*</span></label>
-                    <input type="password" class="form-control" id="matKhau" name="matKhau" required="required"
+                    <input type="password" class="form-control" id="matKhau" name="matKhau"
                            onkeyup="kiemTraMatKhau()">
                 </div>
                 <div class="mb-3">
                     <label for="matKhauNhapLai" class="form-label">Nhập lại
                         mật khẩu<span class="red">*</span> <span id="msg" class="red"></span>
                     </label> <input type="password" class="form-control" id="matKhauNhapLai"
-                                    name="matKhauNhapLai" required="required" onkeyup="kiemTraMatKhau()">
+                                    name="matKhauNhapLai" onkeyup="kiemTraMatKhau()">
                 </div>
                 <hr/>
                 <h3>Thông tin khách hàng</h3>
@@ -107,13 +107,14 @@
                         type="text" class="form-control" id="hoVaTen" name="hoVaTen" value="<%=hoVaTen%>">
                 </div>
                 <div class="mb-3">
-                    <label for="gioiTinh" class="form-label">Giới tính</label> <select
-                        class="form-control" id="gioiTinh" name="gioiTinh">
-                    <option></option>
-                    <option value="Nam" <%=(gioiTinh.equals("Nam")) ? "selected='selected'" : "" %> >Nam</option>
-                    <option value="Nữ" <%=(gioiTinh.equals("nữ")) ? "selected='selected'" : "" %>>Nữ</option>
-                    <option value="Khác"<%=(gioiTinh.equals("khác")) ? "selected='selected'" : "" %>>Khác</option>
-                </select>
+                    <label for="gioiTinh" class="form-label">Giới tính</label>
+                    <select
+                            class="form-control" id="gioiTinh" name="gioiTinh">
+                        <option></option>
+                        <option value="Nam" <%=(gioiTinh.equals("Nam")) ? "selected='selected'" : "" %> >Nam</option>
+                        <option value="Nữ" <%=(gioiTinh.equals("nữ")) ? "selected='selected'" : "" %>>Nữ</option>
+                        <option value="Khác"<%=(gioiTinh.equals("khác")) ? "selected='selected'" : "" %>>Khác</option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="ngaySinh" class="form-label">Ngày sinh</label> <input

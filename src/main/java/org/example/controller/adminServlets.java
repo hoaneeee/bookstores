@@ -5,30 +5,43 @@
     import database.theLoaiDAO;
     import jakarta.servlet.RequestDispatcher;
     import jakarta.servlet.ServletException;
+    import jakarta.servlet.annotation.MultipartConfig;
     import jakarta.servlet.annotation.WebServlet;
     import jakarta.servlet.http.HttpServlet;
     import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
+    import jakarta.servlet.http.Part;
     import model.sanPham;
     import model.tacGia;
     import model.theLoai;
-    import org.apache.commons.fileupload.FileItem;
-    import org.apache.commons.fileupload.FileUploadException;
-    import org.apache.commons.fileupload.RequestContext;
-    import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-    import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
     import java.io.File;
     import java.io.IOException;
-    import java.util.List;
+    import java.io.InputStream;
+    import java.nio.file.Files;
+    import java.util.ArrayList;
 
-    @WebServlet(name = "adminServlets", value = "/admin-addProducts")
+    @WebServlet(name = "adminServlets", urlPatterns ={"/admin-servlet","/upload"} )
+    @MultipartConfig(
+            fileSizeThreshold = 1024 * 1024 * 2,
+            maxFileSize = 1024 * 1024 * 10,
+            maxRequestSize = 1024 * 1024 * 50
+    )
     public class adminServlets extends HttpServlet {
         @Override
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//            Enumeration<String> t = req.getParameterNames();
+//            while (t.hasMoreElements()) {
+//                String key = t.nextElement();
+//                System.out.println(key+": " + req.getParameter("active"));
+//            }
             String active = req.getParameter("active");
             if ("them-san-pham".equals(active)) {
                 addProducts(req, resp);
+            } else if ("danh-sach-san-pham".equals(active)) {
+                listProduct(req, resp);
+            } else if ("xoa-san-pham".equals(active)) {
+                deleteProduct(req, resp);
             }
         }
 
@@ -36,217 +49,149 @@
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             doPost(req, resp);
         }
+        private void listProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            sanPhamDAO sanPhamDAO = new sanPhamDAO();
+            ArrayList<sanPham> listSp= sanPhamDAO.selectAll();
+
+            req.setAttribute("listSp", listSp);
+            RequestDispatcher rd = req.getRequestDispatcher("/admin/listProducts.jsp");
+            rd.forward(req,resp);
+        }
         private void addProducts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            resp.setContentType("text/html");
             try{
-                String folder= getServletContext().getRealPath("anhSanPham");
-                File file ;
-                int maxFileSize = 5000*1024;
-                int maxMemSize= 5000*1024;
-                String contentType = req.getContentType();
-                if (contentType.equals("multipart/form-data")) {
-                    DiskFileItemFactory factory = new DiskFileItemFactory();
-                    //dung luong toi da 1 file
-                    factory.setSizeThreshold(maxMemSize);
-                    //tao file
-                    ServletFileUpload upload = new ServletFileUpload(factory);
-                    upload.setFileSizeMax(maxFileSize);
+                String themAnh = "";
+                String maSanPham = req.getParameter("maSanPham");
+                String tenSanPham = req.getParameter("tenSanPham");
+                String maTacGia = req.getParameter("maTacGia");
+                String namXuatBanstr= req.getParameter("namXuatBan");
+                String giaNhapstr = req.getParameter("giaNhap");
+                String giaGocstr= req.getParameter("giaGoc");
+                String giaBanstr = req.getParameter("giaBan");
+                String soLuongstr = req.getParameter("soLuong");
+                String maTheLoai = req.getParameter("maTheLoai");
+                String ngonNgu = req.getParameter("ngonNgu");
+                String moTa = req.getParameter("moTa");
 
-                    List<FileItem> files= upload.parseRequest((javax.servlet.http.HttpServletRequest) req);
+                int namXuatBan=Integer.parseInt(namXuatBanstr);
+                double giaNhap=Double.parseDouble(giaNhapstr);
+                double giaGoc=Double.parseDouble(giaGocstr);
+                double giaBan=Double.parseDouble(giaBanstr);
+                int soLuong = Integer.parseInt(soLuongstr);
 
-                    sanPham newProduct = new sanPham();
+                tacGia tg= (new tacGiaDAO().selectById(new tacGia(maTacGia,"",null,"")));
+                theLoai tl = (new theLoaiDAO().selectById(new theLoai(maTheLoai,"")));
 
-                    String maSanPham = "";
-                    String baoLoi = "";
+                sanPhamDAO spdao = new sanPhamDAO();
+                String url = "/admin/addProducts.jsp";
+                StringBuilder baoLoi = new StringBuilder();
 
-
-                    for (FileItem fileItem : files) {
-                        if (fileItem.isFormField()) {
-                            String fieldName = fileItem.getFieldName();
-                            String fieldValue = fileItem.getString();
-                            switch (fieldName) {
-                                case "maSanPham":
-                                    maSanPham= fieldValue;
-                                    newProduct.setMaSanPham(fieldValue);
-                                    break;
-                                case "tenSanPham":
-                                    newProduct.setTenSanPham(fieldValue);
-                                    break;
-                                case "maTacGia":
-                                    tacGia tacGia = (new tacGiaDAO().selectById(new tacGia(fieldValue,"",null,"")));
-                                    newProduct.setTacGia(tacGia);
-                                    break;
-                                case "namXuatBan":
-                                    newProduct.setNamXuatBan(Integer.parseInt(fieldValue));
-                                    break;
-                                case "giaNhap":
-                                    newProduct.setGiaNhap(Double.parseDouble(fieldValue));
-                                    break;
-                                case "giaGoc":
-                                    newProduct.setGiaGoc(Double.parseDouble(fieldValue));
-                                    break;
-                                case "giaBan":
-                                    newProduct.setGiaBan(Double.parseDouble(fieldValue));
-                                    break;
-                                case "soLuong":
-                                    newProduct.setSoLuong(Integer.parseInt(fieldValue));
-                                    break;
-                                case "maTheLoai":
-                                    theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(fieldValue, "")));
-                                    newProduct.setTheLoai(theLoai);
-                                    break;
-                                case "ngonNgu":
-                                    newProduct.setNgonNgu(fieldValue);
-                                    break;
-                                case "moTa":
-                                    newProduct.setMoTa(fieldValue);
-                                    break;
+                if (maSanPham == null || maSanPham.trim().isEmpty()) {
+                    baoLoi.append("Cần nhập mã sản phẩm<br>");
+                }
+                if (maTacGia == null || maTacGia.trim().isEmpty()) {
+                    baoLoi.append("Cần nhập mã tác giả<br>");
+                }
+                if (baoLoi.length() > 0) {
+                    req.setAttribute("baoLoi", baoLoi.toString());
+                    req.getRequestDispatcher(url).forward(req, resp);
+                    return;
+                }else {
+                    String folder= getServletContext().getRealPath("anhSanPham");
+                    File uploadDir = new File(folder);
+                    if (!uploadDir.exists()) uploadDir.mkdir();
+                    for(Part filePart : req.getParts()) {
+                        if(filePart != null && filePart.getSubmittedFileName() != null) {
+                            if(filePart.getSize() > 5 * 1024 * 1024) {
+                                System.out.println("File to vl");
+                                return;
                             }
-                        }else {
-                            String fileName = System.currentTimeMillis() + fileItem.getName();
-                            String filePath = folder + File.separator + fileName;
-                            file = new File(filePath);
-
-                            fileItem.write(file);
-
-                            newProduct.setThemAnh(fileName);
+                            String fileName = getFileName(filePart);
+                            if(fileName != null) {
+                                File file = new File(folder + File.separator + fileName);
+                                try(InputStream in = filePart.getInputStream()) {
+                                    Files.copy(in,file.toPath());
+                                    themAnh=fileName;
+                                }
+                            }
                         }
                     }
-                    String url="/success.jsp";
 
-                    sanPhamDAO sanPhamDAO = new sanPhamDAO();
-                    if (maSanPham== null || maSanPham.trim().isEmpty()) {
-                        baoLoi+="ma san pham khong duoc trong";
-                    } else if (sanPhamDAO.checkMASP(maSanPham)) {
-                        baoLoi+="ma san pham da ton tai";
-                    }
-
-                    if (!baoLoi.isEmpty()){
-                        req.setAttribute("baoLoi", baoLoi);
-                        RequestDispatcher rd = req.getRequestDispatcher("/admin/addProducts.jsp");
-                        rd.forward(req, resp);
-                    }else {
-                        sanPhamDAO.insert(newProduct);
-                        RequestDispatcher rd = req.getServletContext().getRequestDispatcher(url);
-                        rd.forward(req, resp);
-                    }
-
+                    sanPham sanPham = new sanPham(maSanPham, tenSanPham, tg, namXuatBan, giaNhap, giaGoc, giaBan, soLuong, tl, ngonNgu, moTa, themAnh);
+                    spdao.insert(sanPham);
+                    req.setAttribute("cl", "green");
+                    req.setAttribute("baoLoi", "Thêm thành công!");
                 }
 
-            } catch (FileUploadException e) {
-                throw new RuntimeException(e);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-      /*      try {
-                System.out.println(req.getContentType());
-                if (ServletFileUpload.isMultipartContent((javax.servlet.http.HttpServletRequest) req))
-                {
-                    DiskFileItemFactory factory = new DiskFileItemFactory();
-                    ServletFileUpload upload = new ServletFileUpload(factory);
-                    List<FileItem> formItems = upload.parseRequest((javax.servlet.http.HttpServletRequest) req);
 
-                    String maSanPham = "";
-                    String tenSanPham = "";
-                    String maTacGia = "";
-                    String namXuatBanstr = "";
-                    String giaNhapstr = "";
-                    String giaGocstr = "";
-                    String giaBanstr = "";
-                    String soLuongstr = "";
-                    String maTheLoai = "";
-                    String ngonNgu = "";
-                    String moTa = "";
+                RequestDispatcher rd   = req.getServletContext().getRequestDispatcher(url);
+                rd.forward(req,resp);
 
-                    for (FileItem item : formItems) {
-                        if (item.isFormField()) {
-                            String name = item.getFieldName();
-                            String value = item.getString();
-                            switch (name) {
-                                case "maSanPham":
-                                    maSanPham = value;
-                                    break;
-                                case "tenSanPham":
-                                    tenSanPham = value;
-                                    break;
-                                case "maTacGia":
-                                    maTacGia = value;
-                                    break;
-                                case "namXuatBan":
-                                    namXuatBanstr = value;
-                                    break;
-                                case "giaNhap":
-                                    giaNhapstr = value;
-                                    break;
-                                case "giaGoc":
-                                    giaGocstr = value;
-                                    break;
-                                case "giaBan":
-                                    giaBanstr = value;
-                                    break;
-                                case "soLuong":
-                                    soLuongstr = value;
-                                    break;
-                                case "maTheLoai":
-                                    maTheLoai = value;
-                                    break;
-                                case "ngonNgu":
-                                    ngonNgu = value;
-                                    break;
-                                case "moTa":
-                                    moTa = value;
-                                    break;
-                            }
-                        } else {
-                            String fileName = new File(item.getName()).getName();
-                            String filePath = getServletContext().getRealPath("img") + File.separator + fileName;
-                            File fileStore = new File(filePath);
-                            item.write(fileStore);
-                            themAnh = "img/" + fileName;
-
-                        }
-                    }
-                    req.setAttribute("maSanPham", maSanPham);
-                    req.setAttribute("tenSanPham", tenSanPham);
-                    req.setAttribute("maTacGia", maTacGia);
-                    req.setAttribute("namXuatBan", namXuatBanstr);
-                    req.setAttribute("giaNhap", giaNhapstr);
-                    req.setAttribute("giaGoc", giaGocstr);
-                    req.setAttribute("giaBan", giaBanstr);
-                    req.setAttribute("soLuong", soLuongstr);
-                    req.setAttribute("maTheLoai", maTheLoai);
-                    req.setAttribute("ngonNgu", ngonNgu);
-                    req.setAttribute("moTa", moTa);
-
-                    int namXuatban = Integer.parseInt(namXuatBanstr);
-                    double giaNhap = Double.parseDouble(giaNhapstr);
-                    double giaGoc = Double.parseDouble(giaGocstr);
-                    double giaBan = Double.parseDouble(giaBanstr);
-                    int soLuong = Integer.parseInt(soLuongstr);
-
-                    tacGia tacGia = (new tacGiaDAO().selectById(new tacGia(maTacGia, "", null, "")));
-                    theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(maTheLoai, "")));
-                    String url = "";
-                    String baoLoi = "";
-                    sanPhamDAO sanPhamDAO = new sanPhamDAO();
-                    if (maSanPham == null || maSanPham.trim().isEmpty()) {
-                        baoLoi += "ma san pham trong ";
-                    } else if (sanPhamDAO.checkMASP(maSanPham)) {
-                        baoLoi += "ma san pham nay da ton tai";
-                    }
-                    if (!baoLoi.isEmpty()) {
-                        url = "/admin/addProducts.jsp";
-                    } else {
-                        sanPham sanPham = new sanPham(maSanPham, tenSanPham, tacGia, namXuatban, giaNhap, giaGoc, giaBan, soLuong, theLoai, ngonNgu, moTa, themAnh);
-                        sanPhamDAO.insert(sanPham);
-                        System.out.println("SanPham object: " + sanPham);
-                        url = "/success.jsp";
-                    }
-                    req.setAttribute("baoLoi", baoLoi);
-                    RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-                    rd.forward(req, resp);
-                }
-            } catch (Exception e) {
+            }catch(Exception e){
                 e.printStackTrace();
-            }*/
+                req.setAttribute("baoLoi", "Lỗi: " + e.getMessage());
+                req.getRequestDispatcher("/admin/addProducts.jsp").forward(req, resp);
+            }
+
+/*
+
+                if (maSanPham==null || maSanPham.trim().isEmpty()){
+                    baoLoi="Cần nhập mã sản phẩm";
+                } else if (spdao.checkMASP(maSanPham)) {
+                    baoLoi="Mã sản phẩm đã tồn tại ";
+                }
+                if(maTacGia==null || maTacGia.trim().isEmpty()){
+                    baoLoi=" cần nhap ma tac gia ";
+                }
+                if(baoLoi.length()>0){
+                    url="/admin/addProducts.jsp";
+                }else {
+                    sanPham sanPham= new sanPham(maSanPham,tenSanPham,tg,namXuatBan,giaNhap,giaGoc,giaBan,soLuong,tl,ngonNgu,moTa,themAnh);
+                    spdao.insert(sanPham);
+                    baoLoi="Them san pham thanh cong";
+                    url="/admin/addProducts.jsp";
+                }
+
+                req.setAttribute("baoLoi",baoLoi);
+                RequestDispatcher rd = req.getServletContext().getRequestDispatcher(url);
+                rd.forward(req, resp);
+*/
+
+
+        }
+        public String getFileName(Part p){
+            String content = p.getHeader("content-disposition");
+            String [] tokens = content.split(";");
+            for (String token : tokens) {
+                if (token.trim().startsWith("filename")) {
+                    return token.substring(token.indexOf("=") + 2, token.length() - 1);
+                }
+            }
+            return null;
+        }
+        private void deleteProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            String id = req.getParameter("id");
+            sanPhamDAO dao = new sanPhamDAO();
+            sanPham sanPham = new sanPham();
+            sanPham.setMaSanPham(id);
+            String url = "/admin/listProducts.jsp";
+            StringBuilder baoLoi = new StringBuilder();
+
+            int result = dao.delete(sanPham);
+
+
+            if (result >=1) {
+                baoLoi.append("Xoa thanh cong");
+                req.setAttribute("cl", "green");
+            }else {
+                baoLoi.append("Xoa khong thanh cong");
+                req.setAttribute("cl", "red");
+            }
+            ArrayList<sanPham> sanPhams = dao.selectAll();
+            req.setAttribute("listSp", sanPhams);
+            req.setAttribute("baoLoi", baoLoi.toString());
+            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher(url);
+            dispatcher.forward(req, resp);
+
         }
     }

@@ -198,4 +198,21 @@ public class tacGiaDAO implements DAOInterface<tacGia> {
         return ketQua;
 
     }
+    public boolean checkMTG (String maTacGia) {
+        boolean ketQua = false;
+        try{
+            Connection con = JDBCutil.getConnection();
+            String sql = "select * from tacgia where ma_tac_gia=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, maTacGia);
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()){
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ketQua;
+    }
 }

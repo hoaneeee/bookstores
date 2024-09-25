@@ -71,11 +71,11 @@
                             <%
                                 if ("admin".equals(khachHang.getVaiTro())) {
                             %>
-                            <li><a class="dropdown-item" href="<%=url%>#">Kho sản phẩm </a></li>
-                            <li><a class="dropdown-item" href="<%=url%>#">Xóa sản phẩm  </a></li>
+                            <li><a class="dropdown-item" href="<%=url%>/admin-servlet?active=danh-sach-san-pham">Danh sách sản phẩm</a></li>
                             <li><a class="dropdown-item" href="<%=url%>/admin/addProducts.jsp">Thêm sản phẩm</a></li>
                             <li><a class="dropdown-item" href="<%=url%>#">Quản lý người dùng</a></li>
                             <li><a class="dropdown-item" href="<%=url%>#">Quản lý đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="<%=url%>#">Doanh thu</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="<%=url%>/khach-hang?hanhDong=sign-out">Thoát tài
                                 khoản</a></li>
