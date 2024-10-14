@@ -1,8 +1,10 @@
 package database;
+import model.TrangThaiDonHang;
 import model.donHang;
 import model.khachHang;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
@@ -22,19 +24,19 @@ public class donHangDAO implements DAOInterface<donHang>{
             while (rs.next()){
                 String madonhang= rs.getString("ma_don_hang");
                 String makhachhang= rs.getString("ma_khach_hang");
-                String diachimuahang = rs.getString("dia_chi_mua_hang");
                 String diachinhanhang = rs.getString("dia_chi_nhan_hang");
                 String hinhthucthanhtoan = rs.getString("hinh_thuc_thanh_toan");
-                String trangthaithanhtoan = rs.getString("trang_thai_thanh_toan");
-                double sotiendathanhtoan = rs.getDouble("so_tien_da_thanh_toan");
                 double sotienconthieu = rs.getDouble("so_tien_con_thieu");
                 Date ngaydathang = rs.getDate("ngay_dat_hang");
                 Date ngaygiaohang= rs.getDate("ngay_giao_hang");
+                String trangThaiString = rs.getString("trang_thai"); // Giả sử có cột trạng thái trong DB
+                TrangThaiDonHang trangThai = TrangThaiDonHang.valueOf(trangThaiString);
 
                 khachHang kh1= new khachHang();
                 kh1.setMaKhachHang(makhachhang);
                 khachHang kh= new khachHangDAO().selectById(kh1);
-                donHang dh = new donHang(madonhang,kh,diachimuahang,diachinhanhang,hinhthucthanhtoan,trangthaithanhtoan,sotiendathanhtoan,sotienconthieu,ngaydathang,ngaygiaohang);
+                donHang dh = new donHang(madonhang,kh,diachinhanhang,hinhthucthanhtoan,sotienconthieu,ngaydathang,ngaygiaohang,trangThai);
+                dh.setTrangThaiDonHang(trangThai);
                 ketqua.add(dh);
             }
             JDBCutil.closeConnection(con);
@@ -59,24 +61,57 @@ public class donHangDAO implements DAOInterface<donHang>{
             while(rs.next()){
                 String madonhang= rs.getString("ma_don_hang");
                 String makhachhang= rs.getString("ma_khach_hang");
-                String diachimuahang = rs.getString("dia_chi_mua_hang");
                 String diachinhanhang = rs.getString("dia_chi_nhan_hang");
                 String hinhthucthanhtoan = rs.getString("hinh_thuc_thanh_toan");
-                String trangthaithanhtoan = rs.getString("trang_thai_thanh_toan");
-                double sotiendathanhtoan = rs.getDouble("so_tien_da_thanh_toan");
                 double sotienconthieu = rs.getDouble("so_tien_con_thieu");
                 Date ngaydathang = rs.getDate("ngay_dat_hang");
                 Date ngaygiaohang= rs.getDate("ngay_giao_hang");
+                String trangThaiString = rs.getString("trang_thai"); // Giả sử có cột trạng thái trong DB
+                TrangThaiDonHang trangThai = TrangThaiDonHang.valueOf(trangThaiString);
+
 
                 khachHang kh1= new khachHang();
                 kh1.setMaKhachHang(makhachhang);
                 khachHang kh= new khachHangDAO().selectById(kh1);
-                ketqua = new donHang(madonhang,kh,diachimuahang,diachinhanhang,hinhthucthanhtoan,trangthaithanhtoan,sotiendathanhtoan,sotienconthieu,ngaydathang,ngaygiaohang);
+                ketqua = new donHang(madonhang,kh,diachinhanhang,hinhthucthanhtoan,sotienconthieu,ngaydathang,ngaygiaohang,trangThai);
+
                 break;
 
             }
             JDBCutil.closeConnection(con);
         }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return ketqua;
+    }
+    public donHang selectByID(int id){
+        donHang ketqua = null;
+        try{
+            Connection con = JDBCutil.getConnection();
+            String sql = "select * from donhang where ma_don_hang=?";
+            PreparedStatement pr = con.prepareStatement(sql);
+            pr.setInt(1,id);
+            ResultSet rs = pr.executeQuery();
+            while(rs.next()){
+                String madonhang= rs.getString("ma_don_hang");
+                String makhachhang= rs.getString("ma_khach_hang");
+                String diachinhanhang = rs.getString("dia_chi_nhan_hang");
+                String hinhthucthanhtoan = rs.getString("hinh_thuc_thanh_toan");
+                double sotienconthieu = rs.getDouble("so_tien_con_thieu");
+                Date ngaydathang = rs.getDate("ngay_dat_hang");
+                Date ngaygiaohang= rs.getDate("ngay_giao_hang");
+                String trangThaiString = rs.getString("trang_thai"); // Giả sử có cột trạng thái trong DB
+                TrangThaiDonHang trangThai = TrangThaiDonHang.valueOf(trangThaiString);
+
+                khachHang kh1= new khachHang();
+                kh1.setMaKhachHang(makhachhang);
+                khachHang kh= new khachHangDAO().selectById(kh1);
+                ketqua = new donHang(madonhang,kh,diachinhanhang,hinhthucthanhtoan,sotienconthieu,ngaydathang,ngaygiaohang,trangThai);
+
+                break;
+
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
         return ketqua;
@@ -88,19 +123,19 @@ public class donHangDAO implements DAOInterface<donHang>{
         try {
             Connection con = JDBCutil.getConnection();
 
-            String sql = "insert into donhang (ma_don_hang, ma_khach_hang, dia_chi_mua_hang , dia_chi_nhan_hang,hinh_thuc_thanh_toan,trang_thai_thanh_toan" +
-                    "so_tien_da_thanh_toan, so_tien_con_thieu,ngay_dat_hang,ngay_giao_hang) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into donhang (ma_don_hang, ma_khach_hang, dia_chi_nhan_hang,hinh_thuc_thanh_toan" +
+                    ",so_tien_con_thieu,ngay_dat_hang,ngay_giao_hang,trang_thai) values (?, ?, ?, ?, ?, ?, ?,?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,t.getMaDonHang());
             st.setString(2,t.getKhachHang().getMaKhachHang());
-            st.setString(3,t.getDiaChiMuaHang());
-            st.setString(4, t.getDiaChiNhanHang());
-            st.setString(5, t.getHinhThucThanhToan());
-            st.setString(6,t.getTrangThaiThanhToan());
-            st.setDouble(7,t.getSoTienDaThanhToan());
-            st.setDouble(8, t.getSoTienConThieu());
-            st.setDate(9,t.getNgayDatHang());
-            st.setDate(10,t.getNgayGiaoHang());
+            st.setString(3, t.getDiaChiNhanHang());
+            st.setString(4, t.getHinhThucThanhToan());
+            st.setDouble(5, t.getTongtien());
+            LocalDate ngaydathang= LocalDate.now();
+            st.setDate(6,Date.valueOf(ngaydathang));
+            LocalDate ngayNhanHang = ngaydathang.plusDays(5);
+            st.setDate(7,Date.valueOf(ngayNhanHang));
+            st.setString(8,t.getTrangThaiDonHang().name());
 
             ketqua=st.executeUpdate();
             JDBCutil.closeConnection(con);
@@ -150,24 +185,38 @@ public class donHangDAO implements DAOInterface<donHang>{
         int ketqua = 0;
         try {
             Connection con = JDBCutil.getConnection();
-            String sql = "UPDATE donhang" + " SET " + "ma_khach_hang=?" + ", dia_chi_nguoi_mua=?" + ",dia_chi_nguoi_nhan=?"
-                    + ",hinh_thuc_thanh_toan=?" + ",trang_thai_thanh_toan=?" + ",so_tien_da_thanh_toan=?" + ",so_tien_con_thieu=?" + ",ngay_dat_hang=?"
-                    + ",ngay_giao_hang=?" + " WHERE ma_don_hang=?";
+            String sql = "UPDATE donhang" + " SET " + "ma_khach_hang=?" + ",dia_chi_nhan_hang=?"
+                    + ",hinh_thuc_thanh_toan=?"+ ",so_tien_con_thieu=?" + ",ngay_dat_hang=?"
+                    + ",ngay_giao_hang=?" + ",trang_thai=?"+ " WHERE ma_don_hang=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,t.getKhachHang().getMaKhachHang());
-            st.setString(2,t.getDiaChiMuaHang());
-            st.setString(3, t.getDiaChiNhanHang());
-            st.setString(4, t.getHinhThucThanhToan());
-            st.setString(5,t.getTrangThaiThanhToan());
-            st.setDouble(6,t.getSoTienDaThanhToan());
-            st.setDouble(7, t.getSoTienConThieu());
-            st.setDate(8,t.getNgayDatHang());
-            st.setDate(9,t.getNgayGiaoHang());
-            st.setString(10,t.getMaDonHang());
+            st.setString(2, t.getDiaChiNhanHang());
+            st.setString(3, t.getHinhThucThanhToan());
+            st.setDouble(4, t.getTongtien());
+            st.setDate(5,t.getNgayDatHang());
+            st.setDate(6,t.getNgayGiaoHang());
+            st.setString(7,t.getTrangThaiDonHang().name());
+            st.setString(8,t.getMaDonHang());
 
             ketqua = st.executeUpdate();
             JDBCutil.closeConnection(con);
         }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return ketqua;
+    }
+    public int update_status(String maDonhang , TrangThaiDonHang status) {
+        int ketqua = 0;
+        try{
+            Connection con = JDBCutil.getConnection();
+            String sql ="update donhang set trang_thai=? where ma_don_hang=?";
+            PreparedStatement pr = con.prepareStatement(sql);
+            pr.setString(1,status.name());
+            pr.setString(2,maDonhang);
+            ketqua = pr.executeUpdate();
+            System.out.println(sql);
+            JDBCutil.closeConnection(con);
+        }catch (Exception e){
             e.printStackTrace();
         }
         return ketqua;

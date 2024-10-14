@@ -1,10 +1,15 @@
 package database;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import model.GioHang;
 import model.khachHang;
 
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 public class khachHangDAO implements DAOInterface<khachHang> {
     @Override
@@ -33,8 +38,15 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                 String email = rs.getString("email");
                 boolean dangKyNhanBangTin = rs.getBoolean("dang_ky_nhan_ban_tin");
                 String vaiTro = rs.getString("vai_tro");
+                String lc = rs.getString("gio_hang");
+                List<GioHang> lcs = new ArrayList<>();
+                if(lc != null && !lc.isEmpty()){
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<GioHang>>(){}.getType();
+                    lcs = gson.fromJson(lc,listType);
+                }
 
-                khachHang kh = new khachHang(maKhacHang, tenDangNhap, matKhau, hoVaTen, gioiTinh, ngaySinh, diaChi, diaChiNhanHang, diaChiMuaHang, soDienThoai, email, dangKyNhanBangTin,vaiTro);
+                khachHang kh= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,diaChiMuaHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
                 ketqua.add(kh);
             }
             JDBCutil.closeConnection(con);
@@ -71,8 +83,16 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                 String email = rs.getString("email");
                 boolean dangKyNhanBangTin = rs.getBoolean("dang_ky_nhan_ban_tin");
                 String vaiTro= rs.getString("vai_tro");
+                String lc = rs.getString("gio_hang");
+                // load thông tin giỏ hàng
+                List<GioHang> lcs = new ArrayList<>();
+                if(lc != null && !lc.isEmpty()){
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<GioHang>>(){}.getType();
+                    lcs = gson.fromJson(lc,listType);
+                }
 
-                ketqua = new khachHang(maKhacHang, tenDangNhap, matKhau, hoVaTen, gioiTinh, ngaySinh, diaChi, diaChiNhanHang, diaChiMuaHang, soDienThoai, email, dangKyNhanBangTin,vaiTro);
+                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,diaChiMuaHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
                 break;
             }
             JDBCutil.closeConnection(con);
@@ -160,7 +180,20 @@ public class khachHangDAO implements DAOInterface<khachHang> {
         }
         return dem;
     }
+    public static void updateCart(String mkh,String lc){
+        try{
+            Connection con = JDBCutil.getConnection();
+            String cmd = "UPDATE khachhang set gio_hang = ? " + "where ma_khach_hang = ?";
+            PreparedStatement st = con.prepareStatement(cmd);
+            st.setString(1,lc);
+            st.setString(2,mkh);
+            st.executeUpdate();
 
+            JDBCutil.closeConnection(con);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public int update(khachHang t) {
         int ketqua = 0;
@@ -176,10 +209,10 @@ public class khachHangDAO implements DAOInterface<khachHang> {
             st.setString(2, t.getMatKhau());
             st.setString(3, t.getHoVaten());
             st.setString(4, t.getGioiTinh());
-            st.setString(5, t.getDiaChi());
-            st.setString(6, t.getDiaChiNhanHang());
-            st.setString(7, t.getDiaChiMuaHang());
-            st.setDate(8, t.getNgaySinh());
+            st.setDate(5, t.getNgaySinh());
+            st.setString(6, t.getDiaChi());
+            st.setString(7, t.getDiaChiNhanHang());
+            st.setString(8, t.getDiaChiMuaHang());
             st.setString(9, t.getSoDienThoai());
             st.setString(10, t.getEmail());
             st.setBoolean(11, t.isDangKyNhanBangTin());
@@ -240,16 +273,23 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                 String matKhau = rs.getString("mat_khau");
                 String hoVaTen = rs.getString("ho_va_ten");
                 String gioiTinh = rs.getString("gioi_tinh");
+                Date ngaySinh = rs.getDate("ngay_sinh");
                 String diaChi = rs.getString("dia_chi");
                 String diaChiNhanHang = rs.getString("dia_chi_nhan_hang");
                 String diaChiMuaHang = rs.getString("dia_chi_mua_hang");
-                Date ngaySinh = rs.getDate("ngay_sinh");
                 String soDienThoai = rs.getString("so_dien_thoai");
                 String email = rs.getString("email");
                 boolean dangKyNhanBangTin = rs.getBoolean("dang_ky_nhan_ban_tin");
                 String vaiTro = rs.getString("vai_tro");
+                String lc = rs.getString("gio_hang");
+                List<GioHang> lcs = new ArrayList<>();
+                if(lc != null && !lc.isEmpty()){
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<GioHang>>(){}.getType();
+                    lcs = gson.fromJson(lc,listType);
+                }
 
-                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,diaChiMuaHang,soDienThoai,email,dangKyNhanBangTin,vaiTro);
+                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,diaChiMuaHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
                 break;
             }
             JDBCutil.closeConnection(con);

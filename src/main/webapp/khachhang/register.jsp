@@ -84,7 +84,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <h3>Tài khoản</h3>
-                <div class="mb-3">q
+                <div class="mb-3">
                     <label for="tenDangNhap" class="form-label">Tên đăng nhập<span class="red">*</span></label>
                     <input type="text" class="form-control" id="tenDangNhap" name="tenDangNhap"
                            value="<%=tenDangNhap%>">

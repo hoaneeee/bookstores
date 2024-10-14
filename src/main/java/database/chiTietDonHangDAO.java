@@ -41,7 +41,7 @@ public class chiTietDonHangDAO implements DAOInterface<chiTietDonHang> {
                 double thuevat = rs.getDouble("thue_vat");
                 double tongtien = rs.getDouble("tong_tien");
 
-                donHang dh = new donHangDAO().selectById(new donHang(donhang, null, "", "", "", "", 0, 0, null, null));
+                donHang dh = new donHangDAO().selectById(new donHang(donhang, null, "", "", 0, null, null,null));
                 sanPham sp = new sanPhamDAO().selectById(new sanPham(sanpham, "", null, 0, 0, 0, 0, 0, null, "", "",""));
 
                 chiTietDonHang ctdh = new chiTietDonHang(maChiTietDonHang, dh, sp, soluong, giagoc, giamgia, giaban,
@@ -84,7 +84,7 @@ public class chiTietDonHangDAO implements DAOInterface<chiTietDonHang> {
                 double thuevat = rs.getDouble("thue_vat");
                 double tongtien = rs.getDouble("tong_tien");
 
-                donHang dh = new donHangDAO().selectById(new donHang(donhang, null, "", "", "", "", 0, 0, null, null));
+                donHang dh = new donHangDAO().selectById(new donHang(donhang, null,"", "", 0, null, null,null));
                 sanPham sp = new sanPhamDAO().selectById(new sanPham(sanpham, "", null, 0, 0, 0, 0, 0, null, "", "",""));
 
                 ketQua = new chiTietDonHang(maChiTietDonHang, dh, sp, soluong, giagoc, giamgia, giaban, thuevat,

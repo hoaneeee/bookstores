@@ -1,6 +1,13 @@
 package model;
 
+import com.google.gson.Gson;
+import database.khachHangDAO;
+
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.System.in;
 
 public class khachHang {
     private String maKhachHang;
@@ -16,11 +23,13 @@ public class khachHang {
     private String email;
     private boolean dangKyNhanBangTin;
     private String vaiTro;
+    private List<GioHang> gioHangList;
 
     public khachHang() {
+        gioHangList = new ArrayList<GioHang>();
     }
 
-    public khachHang(String maKhachHang, String tenDangNhap, String matKhau, String hoVaten, String gioiTinh,Date ngaySinh, String diaChi, String diaChiNhanHang, String diaChiMuaHang, String soDienThoai, String email, boolean dangKyNhanBangTin, String vaiTro) {
+    public khachHang(String maKhachHang, String tenDangNhap, String matKhau, String hoVaten, String gioiTinh,Date ngaySinh, String diaChi, String diaChiNhanHang, String diaChiMuaHang, String soDienThoai, String email, boolean dangKyNhanBangTin, String vaiTro,List<GioHang> lc) {
         this.maKhachHang = maKhachHang;
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
@@ -34,6 +43,7 @@ public class khachHang {
         this.email = email;
         this.dangKyNhanBangTin = dangKyNhanBangTin;
         this.vaiTro = vaiTro;
+        this.gioHangList = lc;
     }
 
     public String getMaKhachHang() {
@@ -139,4 +149,45 @@ public class khachHang {
     public void setVaiTro(String vaiTro) {
         this.vaiTro = vaiTro;
     }
+
+    public void deleteCart(int id){
+        if (gioHangList!=null){
+            for (GioHang g : gioHangList) {
+                if (g.id==id){
+                    gioHangList.remove(g);
+                    Gson gson = new Gson();
+                    String lc = gson.toJson(gioHangList);
+                    khachHangDAO.updateCart(this.maKhachHang,lc);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void addCart(int id, int quantity){
+        if(gioHangList == null) gioHangList = new ArrayList<>();
+        for(GioHang g : gioHangList){
+            if(g.id == id){
+                g.quantity += quantity;
+                Gson gson = new Gson();
+                String lc = gson.toJson(gioHangList);
+                khachHangDAO.updateCart(this.maKhachHang,lc);
+                return;
+            }
+        }
+        gioHangList.add(new GioHang(id,quantity));
+        Gson gson = new Gson();
+        String lc = gson.toJson(gioHangList);
+        khachHangDAO.updateCart(this.maKhachHang,lc);
+    }
+
+    public List<GioHang> getGioHangList() {
+        return gioHangList;
+    }
+
+    public void setGioHangList(List<GioHang> gioHangList) {
+        this.gioHangList = gioHangList;
+    }
+
 }
+

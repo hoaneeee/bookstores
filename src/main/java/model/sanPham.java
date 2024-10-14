@@ -9,7 +9,7 @@ public class sanPham {
     private double giaGoc;
     private double giaBan;
     private int soLuong;
-    private theLoai theLoai;;
+    private theLoai theLoai;
     private String ngonNgu;
     private String moTa;
     private String themAnh;

@@ -86,6 +86,7 @@
                 <div class="col-sm-6">
                     <h3>Thông tin khách hàng</h3>
                     <div class="mb-3">
+
                         <label for="hoVaTen" class="form-label">Họ và tên</label> <input
                             type="text" class="form-control" id="hoVaTen" name="hoVaTen" value="<%=hoVaTen%>">
                     </div>

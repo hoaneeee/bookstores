@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="model.sanPham" %><%--
+<%@ page import="model.sanPham" %>
+<%@ page import="model.khachHang" %><%--
   Created by IntelliJ IDEA.
   User: Acer
   Date: 21/09/2024
@@ -25,8 +26,8 @@
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
             crossorigin="anonymous"></script>
-    <script src="/javascript/main.js"></script>
-    <link rel="stylesheet" href="/css/main.css">
+    <script src="../javascript/main.js"></script>
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 <% String url= request.getScheme() + "://" + request.getServerName() + ":" +request.getServerPort()+ request.getContextPath();%>
@@ -57,7 +58,7 @@
     <jsp:include page="../header.jsp"></jsp:include>
     <div class="container pt-5">
         <div class="text-center" style="padding-top: 50px">
-            <h1>DANH SACH SAN PHAM</h1>
+            <h1>DANH SÁCH USER</h1>
         </div>
         <div style="color: <%=cl%>" id="baoLoi">
             <%=baoLoi%>
@@ -66,34 +67,34 @@
             <thead>
             <tr>
                 <th>STT</th>
-                <th>Ma san pham</th>
-                <th>Ten san pham</th>
-                <th>Gia nhap</th>
-                <th>Gia ban</th>
-                <th>So luong</th>
-                <th>Mo ta</th>
+                <th>Ma khach hang</th>
+                <th>Ten khach hang</th>
+                <th>Gioi tinh</th>
+                <th>Ngay sinh</th>
+                <th>Dia chi</th>
+                <th>So dien thoai</th>
+                <th>Email</th>
                 <th colspan="2">#</th>
 
             </tr>
             </thead>
             <tbody>
             <%
-                ArrayList<sanPham> sanPhams=(ArrayList<sanPham>) request.getAttribute("listSp");
-                if(sanPhams == null || sanPhams.size()==0) return;
+                ArrayList<khachHang> khachHangs=(ArrayList<khachHang>) request.getAttribute("listKhachHang");
+                if(khachHangs == null || khachHangs.size()==0) return;
                 int index=1;
-                for (sanPham sp : sanPhams){
+                for (khachHang kh : khachHangs){
             %>
             <tr>
                 <td><%=index++%></td>
-                <td><%=sp.getMaSanPham()%></td>
-                <td><%=sp.getTenSanPham()%></td>
-                <td><%=sp.getGiaNhap()%></td>
-                <td><%=sp.getGiaBan()%></td>
-                <td><%=sp.getSoLuong()%></td>
-                <td><%=sp.getMoTa()%></td>
-
-                <td>Sửa</td>
-                <td><a href="<%=url%>/admin-servlet?active=xoa-san-pham&id=<%=sp.getMaSanPham()%>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xóa</a></td>
+                <td><%=kh.getMaKhachHang()%></td>
+                <td><%=kh.getHoVaten()%></td>
+                <td><%=kh.getGioiTinh()%></td>
+                <td><%=kh.getNgaySinh()%></td>
+                <td><%=kh.getDiaChi()%></td>
+                <td><%=kh.getNgaySinh()%></td>
+                <td><%=kh.getEmail()%></td>
+                <td><a href="<%=url%>/admin-servlet?active=xoa-user&id=<%=kh.getMaKhachHang()%>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xóa</a></td>
             </tr>
             <%
                 }

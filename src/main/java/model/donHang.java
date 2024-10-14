@@ -6,29 +6,36 @@ import java.util.Objects;
 public class donHang {
     private String maDonHang;
     private khachHang khachHang;
-    private String diaChiMuaHang;
     private String diaChiNhanHang;
     private String hinhThucThanhToan;
-    private String trangThaiThanhToan;
-    private double soTienDaThanhToan;
-    private double soTienConThieu;
+    private double tongtien;
     private Date ngayDatHang;
     private Date ngayGiaoHang;
+    private TrangThaiDonHang trangThaiDonHang;
 
-    public donHang(String maDonHang, model.khachHang khachHang, String diaChiMuaHang, String diaChiNhanHang, String hinhThucThanhToan, String trangThaiThanhToan, double soTienDaThanhToan, double soTienConThieu, Date ngayDatHang, Date ngayGiaoHang) {
+
+
+    public donHang(String maDonHang, model.khachHang khachHang, String diaChiNhanHang, String hinhThucThanhToan, double tongtien, Date ngayDatHang, Date ngayGiaoHang, TrangThaiDonHang trangThaiDonHang) {
         this.maDonHang = maDonHang;
         this.khachHang = khachHang;
-        this.diaChiMuaHang = diaChiMuaHang;
         this.diaChiNhanHang = diaChiNhanHang;
-        this.trangThaiThanhToan = trangThaiThanhToan;
         this.hinhThucThanhToan = hinhThucThanhToan;
-        this.soTienDaThanhToan = soTienDaThanhToan;
-        this.soTienConThieu = soTienConThieu;
+        this.tongtien = tongtien;
         this.ngayDatHang = ngayDatHang;
         this.ngayGiaoHang = ngayGiaoHang;
+        this.trangThaiDonHang = trangThaiDonHang;
     }
 
+
     public donHang() {
+    }
+
+    public TrangThaiDonHang getTrangThaiDonHang() {
+        return trangThaiDonHang;
+    }
+
+    public void setTrangThaiDonHang(TrangThaiDonHang trangThaiDonHang) {
+        this.trangThaiDonHang = trangThaiDonHang;
     }
 
     public String getMaDonHang() {
@@ -47,28 +54,12 @@ public class donHang {
         this.khachHang = khachHang;
     }
 
-    public String getDiaChiMuaHang() {
-        return diaChiMuaHang;
-    }
-
-    public void setDiaChiMuaHang(String diaChiMuaHang) {
-        this.diaChiMuaHang = diaChiMuaHang;
-    }
-
     public String getDiaChiNhanHang() {
         return diaChiNhanHang;
     }
 
     public void setDiaChiNhanHang(String diaChiNhanHang) {
         this.diaChiNhanHang = diaChiNhanHang;
-    }
-
-    public String getTrangThaiThanhToan() {
-        return trangThaiThanhToan;
-    }
-
-    public void setTrangThaiThanhToan(String trangThaiThanhToan) {
-        this.trangThaiThanhToan = trangThaiThanhToan;
     }
 
     public String getHinhThucThanhToan() {
@@ -79,20 +70,12 @@ public class donHang {
         this.hinhThucThanhToan = hinhThucThanhToan;
     }
 
-    public double getSoTienDaThanhToan() {
-        return soTienDaThanhToan;
+    public double getTongtien() {
+        return tongtien;
     }
 
-    public void setSoTienDaThanhToan(double soTienDaThanhToan) {
-        this.soTienDaThanhToan = soTienDaThanhToan;
-    }
-
-    public double getSoTienConThieu() {
-        return soTienConThieu;
-    }
-
-    public void setSoTienConThieu(double soTienConThieu) {
-        this.soTienConThieu = soTienConThieu;
+    public void setTongtien(double tongtien) {
+        this.tongtien = tongtien;
     }
 
     public Date getNgayDatHang() {

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="./css/font/fontawesome-free-6.4.0-web/css/all.min.css">
 <link rel="stylesheet" href="css/main.css">
-<div class="col-lg-3 fixed-position">
+<div class="col-lg-2 fixed-position">
     <div class="list-group">
         <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
             thể loại
