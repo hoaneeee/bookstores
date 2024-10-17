@@ -35,6 +35,8 @@ public class KhachHangServlets extends HttpServlet {
             mybill(req, resp);
         } else if ("deleteBill".equals(hanhDong)) {
             delete_bill(req, resp);
+        } else if ("update".equals(hanhDong)) {
+            updateInformation(req, resp);
         }
     }
 
@@ -55,25 +57,25 @@ public class KhachHangServlets extends HttpServlet {
         String tenDangNhap = req.getParameter("tenDangNhap");
         String matKhau = req.getParameter("matKhau");
         String matKhauNhapLai = req.getParameter("matKhauNhapLai");
-        String hoVaTen = req.getParameter("hoVaTen");
+       /* String hoVaTen = req.getParameter("hoVaTen");
         String gioiTinh = req.getParameter("gioiTinh");
         String ngaySinh = req.getParameter("ngaySinh");
         String diaChiKhachHang = req.getParameter("diaChiKhachHang");
         String diaChiMuaHang = req.getParameter("diaChiMuaHang");
         String diaChiNhanHang = req.getParameter("diaChiNhanHang");
-        String dienThoai = req.getParameter("dienThoai");
+        String dienThoai = req.getParameter("dienThoai");*/
         String email = req.getParameter("email");
         String dongYDieuKhoan = req.getParameter("dongYDieuKhoan");
         String dongYNhanMail = req.getParameter("dongYNhanMail");
 
         req.setAttribute("tenDangNhap", tenDangNhap);
-        req.setAttribute("hoVaTen", hoVaTen);
+/*        req.setAttribute("hoVaTen", hoVaTen);
         req.setAttribute("gioiTinh", gioiTinh);
         req.setAttribute("ngaySinh", ngaySinh);
         req.setAttribute("diaChiKhachHang", diaChiKhachHang);
         req.setAttribute("diaChiMuaHang", diaChiMuaHang);
         req.setAttribute("diaChiNhanHang", diaChiNhanHang);
-        req.setAttribute("dienThoai", dienThoai);
+        req.setAttribute("dienThoai", dienThoai);*/
         req.setAttribute("email", email);
         req.setAttribute("dongYDieuKhoan", dongYDieuKhoan);
         req.setAttribute("dongYNhanMail", dongYNhanMail);
@@ -101,7 +103,7 @@ public class KhachHangServlets extends HttpServlet {
             String maKhachHang = rd.nextInt(1000) + "";
             String vaiTro = "khachhang";
             List<GioHang> lcs = new ArrayList<>();
-            khachHang kh = new khachHang(maKhachHang, tenDangNhap, matKhau, hoVaTen, gioiTinh, Date.valueOf(ngaySinh), diaChiKhachHang, diaChiNhanHang, diaChiMuaHang, dienThoai, email, dongYNhanMail != null, vaiTro,lcs);
+            khachHang kh = new khachHang(maKhachHang, tenDangNhap, matKhau, email, dongYNhanMail != null, lcs,vaiTro);
             khachHangDAO.insert(kh);
             url = "/success.jsp";
         }
@@ -239,7 +241,6 @@ public class KhachHangServlets extends HttpServlet {
         String gioiTinh = req.getParameter("gioiTinh");
         String ngaySinh = req.getParameter("ngaySinh");
         String diaChiKhachHang = req.getParameter("diaChiKhachHang");
-        String diaChiMuaHang = req.getParameter("diaChiMuaHang");
         String diaChiNhanHang = req.getParameter("diaChiNhanHang");
         String dienThoai = req.getParameter("dienThoai");
         String email = req.getParameter("email");
@@ -249,7 +250,6 @@ public class KhachHangServlets extends HttpServlet {
         req.setAttribute("gioiTinh", gioiTinh);
         req.setAttribute("ngaySinh", ngaySinh);
         req.setAttribute("diaChiKhachHang", diaChiKhachHang);
-        req.setAttribute("diaChiMuaHang", diaChiMuaHang);
         req.setAttribute("diaChiNhanHang", diaChiNhanHang);
         req.setAttribute("dienThoai", dienThoai);
         req.setAttribute("email", email);
@@ -271,8 +271,8 @@ public class KhachHangServlets extends HttpServlet {
                 if (khachHang != null) {
                     String maKhachHang = khachHang.getMaKhachHang();
                     List<GioHang> lcs  = new ArrayList<>();
-                    khachHang kh = new khachHang(maKhachHang, "", "", hoVaTen, gioiTinh, Date.valueOf(ngaySinh), diaChiKhachHang, diaChiNhanHang, diaChiMuaHang, dienThoai, email, dongYNhanMail != null, "",lcs);
-                    khachHangDAO.updateInfor(kh);
+                    khachHang kh = new khachHang(maKhachHang, "", "", hoVaTen, gioiTinh, Date.valueOf(ngaySinh), diaChiKhachHang, diaChiNhanHang, dienThoai, email, dongYNhanMail != null, "",lcs);
+                    khachHangDAO.FixInfor(kh);
                     khachHang kh2 = khachHangDAO.selectById(kh);
                     req.getSession().setAttribute("khachHang", kh2);
                     url = "/success.jsp";
@@ -318,5 +318,39 @@ public class KhachHangServlets extends HttpServlet {
             RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
             rd.forward(req, resp);
         }
+    }
+    public void updateInformation (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        khachHang kh = (khachHang) session.getAttribute("khachHang");
+        String hoVaTen = req.getParameter("hoVaTen");
+        String gioiTinh = req.getParameter("gioiTinh");
+        String ngaySinh = req.getParameter("ngaySinh");
+        String diaChiKhachHang = req.getParameter("diaChiKhachHang");
+        String diaChiNhanHang = req.getParameter("diaChiNhanHang");
+        String dienThoai = req.getParameter("dienThoai");
+        String dongYNhanMail = req.getParameter("dongYNhanMail");
+
+        req.setAttribute("hoVaTen", hoVaTen);
+        req.setAttribute("gioiTinh", gioiTinh);
+        req.setAttribute("ngaySinh", ngaySinh);
+        req.setAttribute("diaChiKhachHang", diaChiKhachHang);
+        req.setAttribute("diaChiNhanHang", diaChiNhanHang);
+        req.setAttribute("dienThoai", dienThoai);
+        khachHangDAO khachHangDAO= new khachHangDAO();
+        StringBuilder baoLoi=new StringBuilder();
+        String url = "/khachhang/updateInformation.jsp";
+        if (kh != null) {
+            String makhachhang= kh.getMaKhachHang();
+            List<GioHang> lcs  = new ArrayList<>();
+            khachHang khachHang= new khachHang(makhachhang,"","",hoVaTen,gioiTinh,Date.valueOf(ngaySinh),diaChiKhachHang,diaChiNhanHang,dienThoai,"",dongYNhanMail!=null,"",lcs);
+            khachHangDAO.FixInfor(khachHang);
+            khachHang kh2 = khachHangDAO.selectById(kh);
+            req.getSession().setAttribute("khachHang", kh2);
+            baoLoi.append("cap nhat thong tin thanh cong !");
+            req.setAttribute("cl", "green");
+        }
+        req.setAttribute("baoLoi", baoLoi.toString());
+        RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+        rd.forward(req, resp);
     }
 }

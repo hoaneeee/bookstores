@@ -29,6 +29,9 @@
         .red {
             color: red;
         }
+        body{
+            background: linear-gradient(to bottom, rgba(255, 191, 0, 0.7  ), rgba(0, 191, 255, 0.7));
+        }
     </style>
 </head>
 <body>
@@ -68,8 +71,8 @@
     dongYNhanMail = (dongYNhanMail.equals("null")) ? "" : dongYNhanMail;
 
 %>
-<div class="container">
-    <div class="text-center">
+<div class="container" style="background: linear-gradient(to bottom, rgba(255, 191, 0, 0.7  ), rgba(0, 191, 255, 0.7));">
+    <div class="text-center" style="padding-top: 20px">
         <h1>ĐĂNG KÝ TÀI KHOẢN</h1>
     </div>
     <div class="red" id="baoLoi">
@@ -79,11 +82,11 @@
         String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
                 + request.getContextPath();
     %>
-    <form class="form-control" action="<%=url%>/khach-hang" method="POST">
+    <form class="form-control" style="background:linear-gradient(to bottom, rgba(255, 191, 0, 0.3  ), rgba(0, 191, 255, 0.3 )); border: 0 solid  " action="<%=url%>/khach-hang" method="POST">
         <input type="hidden" name="hanhDong" value="sign-up">
         <div class="row">
-            <div class="col-sm-6">
-                <h3>Tài khoản</h3>
+<%--            <div class="col-sm-6">--%>
+                <h3 class="text-center">Tài khoản</h3>
                 <div class="mb-3">
                     <label for="tenDangNhap" class="form-label">Tên đăng nhập<span class="red">*</span></label>
                     <input type="text" class="form-control" id="tenDangNhap" name="tenDangNhap"
@@ -101,7 +104,7 @@
                                     name="matKhauNhapLai" onkeyup="kiemTraMatKhau()">
                 </div>
                 <hr/>
-                <h3>Thông tin khách hàng</h3>
+               <%-- <h3>Thông tin khách hàng</h3>
                 <div class="mb-3">
                     <label for="hoVaTen" class="form-label">Họ và tên</label> <input
                         type="text" class="form-control" id="hoVaTen" name="hoVaTen" value="<%=hoVaTen%>">
@@ -109,7 +112,7 @@
                 <div class="mb-3">
                     <label for="gioiTinh" class="form-label">Giới tính</label>
                     <select
-                            class="form-control" id="gioiTinh" name="gioiTinh">
+                                class="form-control" id="gioiTinh" name="gioiTinh">
                         <option></option>
                         <option value="Nam" <%=(gioiTinh.equals("Nam")) ? "selected='selected'" : "" %> >Nam</option>
                         <option value="Nữ" <%=(gioiTinh.equals("nữ")) ? "selected='selected'" : "" %>>Nữ</option>
@@ -119,10 +122,10 @@
                 <div class="mb-3">
                     <label for="ngaySinh" class="form-label">Ngày sinh</label> <input
                         type="date" class="form-control" id="ngaySinh" name="ngaySinh" value="<%=ngaySinh%>">
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <h3>Địa chỉ</h3>
+                </div>--%>
+<%--            </div>--%>
+<%--            <div class="col-sm-6">--%>
+    <%--            <h3>Địa chỉ</h3>
                 <div class="mb-3">
                     <label for="diaChiKhachHang" class="form-label">Địa chỉ
                         khách hàng</label> <input type="text" class="form-control"
@@ -142,7 +145,7 @@
                 <div class="mb-3">
                     <label for="dienThoai" class="form-label">Điện thoại</label> <input
                         type="tel" class="form-control" id="dienThoai" name="dienThoai" value="<%=dienThoai%>">
-                </div>
+                </div>--%>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label> <input
                         type="email" class="form-control" id="email" name="email" value="<%=email%>">
@@ -160,10 +163,12 @@
                         email</label> <input type="checkbox" class="form-check-input"
                                              id="dongYNhanMail" name="dongYNhanMail" value="<%=dongYNhanMail%>">
                 </div>
+                <div class="mb-3" style="width: 10%; margin: auto;">
                 <input class="btn btn-primary form-control" type="submit"
-                       value="Đăng ký" name="submit" id="submit" style="visibility: hidden;"/>
+                       value="Đăng ký" name="submit" id="submit" style="visibility: hidden; "/>
+                </div>
             </div>
-        </div>
+<%--        </div>--%>
     </form>
 </div>
 </body>

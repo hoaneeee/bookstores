@@ -46,7 +46,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                     lcs = gson.fromJson(lc,listType);
                 }
 
-                khachHang kh= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,diaChiMuaHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
+                khachHang kh= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
                 ketqua.add(kh);
             }
             JDBCutil.closeConnection(con);
@@ -77,7 +77,6 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                 String gioiTinh = rs.getString("gioi_tinh");
                 String diaChi = rs.getString("dia_chi");
                 String diaChiNhanHang = rs.getString("dia_chi_nhan_hang");
-                String diaChiMuaHang = rs.getString("dia_chi_mua_hang");
                 Date ngaySinh = rs.getDate("ngay_sinh");
                 String soDienThoai = rs.getString("so_dien_thoai");
                 String email = rs.getString("email");
@@ -92,7 +91,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                     lcs = gson.fromJson(lc,listType);
                 }
 
-                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,diaChiMuaHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
+                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
                 break;
             }
             JDBCutil.closeConnection(con);
@@ -101,8 +100,36 @@ public class khachHangDAO implements DAOInterface<khachHang> {
         }
         return ketqua;
     }
-
     @Override
+    public int insert(khachHang t) {
+        int ketqua = 0;
+        try {
+            Connection con = JDBCutil.getConnection();
+
+            String sql = "insert into khachhang (ma_khach_hang,ten_dang_nhap,mat_khau," +
+                    "email,dang_ky_nhan_ban_tin,vai_tro) values(?,?,?,?,?,?)";
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setString(1, t.getMaKhachHang());
+            st.setString(2, t.getTenDangNhap());
+            st.setString(3, t.getMatKhau());
+            st.setString(4, t.getEmail());
+            st.setBoolean(5, t.isDangKyNhanBangTin());
+            st.setString(6, t.getVaiTro());
+
+            ketqua = st.executeUpdate();
+
+            System.out.println("Bạn đã thực thi: " + sql);
+            System.out.println("Có " + ketqua + " dòng bị thay đổi!");
+
+            JDBCutil.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ketqua;
+    }
+
+    /*@Override
     public int insert(khachHang t) {
         int ketqua = 0;
         try {
@@ -136,7 +163,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
             e.printStackTrace();
         }
         return ketqua;
-    }
+    }*/
 
     @Override
     public int insertAll(ArrayList<khachHang> list) {
@@ -201,7 +228,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
             Connection con = JDBCutil.getConnection();
 
             String sql = "UPDATE khachhang " + " SET " + " ten_dang_nhap=?" + ", mat_khau=?" + ", ho_va_ten=?" + ", gioi_tinh=?" +
-                    ", ngay_sinh=?" + ", dia_chi=?" + ", dia_chi_nhan_hang=?" + ", dia_chi_mua_hang=?" + ", so_dien_thoai=?"
+                    ", ngay_sinh=?" + ", dia_chi=?" + ", dia_chi_nhan_hang=?" + ", so_dien_thoai=?"
                     + ", email=?" + ", dang_ky_nhan_ban_tin=?"+",vai_tro=?" + " WHERE ma_khach_hang=?";
             PreparedStatement st = con.prepareStatement(sql);
 
@@ -212,12 +239,11 @@ public class khachHangDAO implements DAOInterface<khachHang> {
             st.setDate(5, t.getNgaySinh());
             st.setString(6, t.getDiaChi());
             st.setString(7, t.getDiaChiNhanHang());
-            st.setString(8, t.getDiaChiMuaHang());
-            st.setString(9, t.getSoDienThoai());
-            st.setString(10, t.getEmail());
-            st.setBoolean(11, t.isDangKyNhanBangTin());
-            st.setString(12,t.getVaiTro());
-            st.setString(13, t.getMaKhachHang());
+            st.setString(8, t.getSoDienThoai());
+            st.setString(9, t.getEmail());
+            st.setBoolean(10, t.isDangKyNhanBangTin());
+            st.setString(11,t.getVaiTro());
+            st.setString(12, t.getMaKhachHang());
 
             ketqua = st.executeUpdate();
 
@@ -276,7 +302,6 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                 Date ngaySinh = rs.getDate("ngay_sinh");
                 String diaChi = rs.getString("dia_chi");
                 String diaChiNhanHang = rs.getString("dia_chi_nhan_hang");
-                String diaChiMuaHang = rs.getString("dia_chi_mua_hang");
                 String soDienThoai = rs.getString("so_dien_thoai");
                 String email = rs.getString("email");
                 boolean dangKyNhanBangTin = rs.getBoolean("dang_ky_nhan_ban_tin");
@@ -289,7 +314,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                     lcs = gson.fromJson(lc,listType);
                 }
 
-                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,diaChiMuaHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
+                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
                 break;
             }
             JDBCutil.closeConnection(con);
@@ -326,13 +351,13 @@ public class khachHangDAO implements DAOInterface<khachHang> {
 
         return ketQua>0;
     }
-    public int updateInfor(khachHang t) {
+    public int FixInfor(khachHang t) {
         int ketqua = 0;
         try {
             Connection con = JDBCutil.getConnection();
 
             String sql = "UPDATE khachhang " + " SET " + "ho_va_ten=?" + ", gioi_tinh=?" +
-                    ", ngay_sinh=?" + ", dia_chi=?" + ", dia_chi_nhan_hang=?" + ", dia_chi_mua_hang=?" + ", so_dien_thoai=?"
+                    ", ngay_sinh=?" + ", dia_chi=?" + ", dia_chi_nhan_hang=?" + ", so_dien_thoai=?"
                     + ", email=?" + ", dang_ky_nhan_ban_tin=?" + " WHERE ma_khach_hang=?";
             PreparedStatement st = con.prepareStatement(sql);
 
@@ -341,11 +366,40 @@ public class khachHangDAO implements DAOInterface<khachHang> {
             st.setDate(3, t.getNgaySinh());
             st.setString(4, t.getDiaChi());
             st.setString(5, t.getDiaChiNhanHang());
-            st.setString(6, t.getDiaChiMuaHang());
-            st.setString(7, t.getSoDienThoai());
-            st.setString(8, t.getEmail());
-            st.setBoolean(9, t.isDangKyNhanBangTin());
-            st.setString(10, t.getMaKhachHang());
+            st.setString(6, t.getSoDienThoai());
+            st.setString(7, t.getEmail());
+            st.setBoolean(8, t.isDangKyNhanBangTin());
+            st.setString(9, t.getMaKhachHang());
+
+            ketqua = st.executeUpdate();
+
+            System.out.println("Bạn đã thực thi: " + sql);
+            System.out.println("Có " + ketqua + " dòng bị thay đổi!");
+            JDBCutil.closeConnection(con);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ketqua;
+
+    }
+    public int UpdateInfor(khachHang t) {
+        int ketqua = 0;
+        try {
+            Connection con = JDBCutil.getConnection();
+
+            String sql = "UPDATE khachhang " + " SET " + "ho_va_ten=?" + ", gioi_tinh=?" +
+                    ", ngay_sinh=?" + ", dia_chi=?" + ", dia_chi_nhan_hang=?" + ", so_dien_thoai=?"
+                     + " WHERE ma_khach_hang=?";
+            PreparedStatement st = con.prepareStatement(sql);
+
+            st.setString(1, t.getHoVaten());
+            st.setString(2, t.getGioiTinh());
+            st.setDate(3, t.getNgaySinh());
+            st.setString(4, t.getDiaChi());
+            st.setString(5, t.getDiaChiNhanHang());
+            st.setString(6, t.getSoDienThoai());
+            st.setString(7, t.getMaKhachHang());
 
             ketqua = st.executeUpdate();
 

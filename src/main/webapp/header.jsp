@@ -108,6 +108,8 @@
                             <li><a class="dropdown-item" href="<%=url%>/khachhang/notify.jsp">Thông báo</a></li>
                             <li><a class="dropdown-item" href="<%=url%>/khachhang/changeInformation.jsp">Thay đổi thông
                                 tin</a></li>
+                            <li><a class="dropdown-item" href="<%=url%>/khachhang/updateInformation.jsp"> Cập nhật thông tin
+                                </a></li>
                             <li><a class="dropdown-item" href="<%=url%>/khachhang/changePassword.jsp">Đổi mật khẩu</a>
                             </li>
                             <li>

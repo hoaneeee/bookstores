@@ -17,7 +17,6 @@ public class khachHang {
     private String gioiTinh;
     private String diaChi;
     private String diaChiNhanHang;
-    private String diaChiMuaHang;
     private Date ngaySinh;
     private String soDienThoai;
     private String email;
@@ -29,7 +28,17 @@ public class khachHang {
         gioHangList = new ArrayList<GioHang>();
     }
 
-    public khachHang(String maKhachHang, String tenDangNhap, String matKhau, String hoVaten, String gioiTinh,Date ngaySinh, String diaChi, String diaChiNhanHang, String diaChiMuaHang, String soDienThoai, String email, boolean dangKyNhanBangTin, String vaiTro,List<GioHang> lc) {
+    public khachHang(String maKhachHang, String tenDangNhap, String matKhau, String email, boolean dangKyNhanBangTin, List<GioHang> gioHangList,String vaiTro) {
+        this.maKhachHang = maKhachHang;
+        this.tenDangNhap = tenDangNhap;
+        this.matKhau = matKhau;
+        this.email = email;
+        this.dangKyNhanBangTin = dangKyNhanBangTin;
+        this.gioHangList = gioHangList;
+        this.vaiTro = vaiTro;
+    }
+
+    public khachHang(String maKhachHang, String tenDangNhap, String matKhau, String hoVaten, String gioiTinh, Date ngaySinh, String diaChi, String diaChiNhanHang, String soDienThoai, String email, boolean dangKyNhanBangTin, String vaiTro, List<GioHang> lc) {
         this.maKhachHang = maKhachHang;
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
@@ -37,7 +46,6 @@ public class khachHang {
         this.gioiTinh = gioiTinh;
         this.diaChi = diaChi;
         this.diaChiNhanHang = diaChiNhanHang;
-        this.diaChiMuaHang = diaChiMuaHang;
         this.ngaySinh = ngaySinh;
         this.soDienThoai = soDienThoai;
         this.email = email;
@@ -102,13 +110,6 @@ public class khachHang {
         this.diaChiNhanHang = diaChiNhanHang;
     }
 
-    public String getDiaChiMuaHang() {
-        return diaChiMuaHang;
-    }
-
-    public void setDiaChiMuaHang(String diaChiMuaHang) {
-        this.diaChiMuaHang = diaChiMuaHang;
-    }
 
     public Date getNgaySinh() {
         return ngaySinh;
