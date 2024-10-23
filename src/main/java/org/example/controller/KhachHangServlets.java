@@ -29,9 +29,9 @@ public class KhachHangServlets extends HttpServlet {
             sign_up(req, resp);
         } else if (hanhDong.equals("changePassword")) {
             changePassword(req, resp);
-        } else if (hanhDong.equals("changeInformation")) {
+        } /*else if (hanhDong.equals("changeInformation")) {
             changeInformation(req, resp);
-        }else if ("mybill".equals(hanhDong)){
+        }*/else if ("mybill".equals(hanhDong)){
             mybill(req, resp);
         } else if ("deleteBill".equals(hanhDong)) {
             delete_bill(req, resp);
@@ -236,7 +236,7 @@ public class KhachHangServlets extends HttpServlet {
         rd.forward(req, resp);
     }
 
-    private void changeInformation(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    /*private void changeInformation(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String hoVaTen = req.getParameter("hoVaTen");
         String gioiTinh = req.getParameter("gioiTinh");
         String ngaySinh = req.getParameter("ngaySinh");
@@ -281,7 +281,7 @@ public class KhachHangServlets extends HttpServlet {
         }
         RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
         rd.forward(req, resp);
-    }
+    }*/
     public void mybill(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         khachHang khachHang = (khachHang) session.getAttribute("khachHang");
@@ -306,7 +306,7 @@ public class KhachHangServlets extends HttpServlet {
 
             int result = donHangDao.delete(donHang);
             if (result >= 1) {
-                baoLoi.append("Xoa thanh cong");
+                baoLoi.append("Huy thanh cong");
                 req.setAttribute("cl", "green");
             }else {
                 baoLoi.append("Xoa khong thanh cong");
@@ -353,4 +353,5 @@ public class KhachHangServlets extends HttpServlet {
         RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
         rd.forward(req, resp);
     }
+
 }

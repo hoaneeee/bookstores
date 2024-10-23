@@ -87,7 +87,6 @@
                 <td><%=index++%></td>
                 <td><%=sp.getMaSanPham()%></td>
                 <td><%=sp.getTenSanPham()%></td>
-                <td><%=sp.getGiaNhap()%></td>
                 <td><%=sp.getGiaBan()%></td>
                 <td><%=sp.getSoLuong()%></td>
                 <td><%=sp.getMoTa()%></td>

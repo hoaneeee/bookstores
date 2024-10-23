@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>Update Information</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -26,6 +27,7 @@
         body {
             background: linear-gradient(135deg, #e0f7fa, #80deea);
             background-attachment: fixed;
+        }
 
         .container {
             background-color: #ffffff;
@@ -57,12 +59,17 @@
         label {
             color: #455a64;
         }
+        .padding_top{
+            padding-top: 50px;
+        }
+
 
     </style>
 
 
 </head>
 <body>
+<jsp:include page="../header.jsp"></jsp:include>
 <% String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
         + request.getContextPath();
 %>
@@ -89,7 +96,7 @@
 
     String dienThoai = request.getAttribute("dienThoai") + "";
     dienThoai = (dienThoai.equals("null")) ? "" : dienThoai;%>
-<div class="container mt-5">
+<div class="container mt-5 padding_top">
     <h2 class="text-center mb-4">Cập Nhật Thông Tin Người Dùng</h2>
     <div style="color: <%=cl%>" id="baoLoi">
         <%=baoLoi%>
@@ -138,7 +145,8 @@
         </div>
     </form>
 </div>
-
-
+<footer>
+    <%@include file="../footer.jsp"%>
+</footer>
 </body>
 </html>

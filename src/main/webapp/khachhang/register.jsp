@@ -30,7 +30,7 @@
             color: red;
         }
         body{
-            background: linear-gradient(to bottom, rgba(255, 191, 0, 0.7  ), rgba(0, 191, 255, 0.7));
+            background: linear-gradient(to bottom, rgba(199 ,21 ,133 ,0.7  ), rgba(0, 191, 255, 0.7));
         }
     </style>
 </head>
@@ -82,7 +82,7 @@
         String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
                 + request.getContextPath();
     %>
-    <form class="form-control" style="background:linear-gradient(to bottom, rgba(255, 191, 0, 0.3  ), rgba(0, 191, 255, 0.3 )); border: 0 solid  " action="<%=url%>/khach-hang" method="POST">
+    <form class="form-control" style="background:linear-gradient(to bottom, rgba(199, 21, 133, 0.3  ), rgba(0, 191, 255, 0.3 )); border: 0 solid  " action="<%=url%>/khach-hang" method="POST">
         <input type="hidden" name="hanhDong" value="sign-up">
         <div class="row">
 <%--            <div class="col-sm-6">--%>

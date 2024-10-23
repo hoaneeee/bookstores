@@ -32,7 +32,6 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                 String gioiTinh = rs.getString("gioi_tinh");
                 String diaChi = rs.getString("dia_chi");
                 String diaChiNhanHang = rs.getString("dia_chi_nhan_hang");
-                String diaChiMuaHang = rs.getString("dia_chi_mua_hang");
                 Date ngaySinh = rs.getDate("ngay_sinh");
                 String soDienThoai = rs.getString("so_dien_thoai");
                 String email = rs.getString("email");

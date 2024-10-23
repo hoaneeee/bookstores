@@ -36,19 +36,17 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
                 String tensanpham = rs.getString("ten_san_pham");
                 String matacgia = rs.getString("ma_tac_gia");
                 int namxuatban = rs.getInt("nam_xuat_ban");
-                double gianhap = rs.getDouble("gia_nhap");
                 double giagoc = rs.getDouble("gia_goc");
                 double giaban = rs.getDouble("gia_ban");
                 int soluong = (int) rs.getDouble("so_luong");
                 String matheloai = rs.getString("ma_the_loai");
-                String ngonngu = rs.getString("ngon_ngu");
                 String mota = rs.getString("mo_ta");
                 String themAnh = rs.getString("them_anh");
 
                 tacGia tacGia = (new tacGiaDAO().selectById(new tacGia(matacgia, "", null, "")));
                 theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(matheloai, "")));
 
-                sanPham sp = new sanPham(masanpham, tensanpham, tacGia, namxuatban, gianhap, giagoc, giaban, soluong, theLoai, ngonngu, mota, themAnh);
+                sanPham sp = new sanPham(masanpham, tensanpham, tacGia, namxuatban, giagoc, giaban, soluong, theLoai, mota, themAnh);
                 ketQua.add(sp);
             }
 
@@ -76,19 +74,17 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
                 String tensanpham = rs.getString("ten_san_pham");
                 String matacgia = rs.getString("ma_tac_gia");
                 int namxuatban = rs.getInt("nam_xuat_ban");
-                double gianhap = rs.getDouble("gia_nhap");
                 double giagoc = rs.getDouble("gia_goc");
                 double giaban = rs.getDouble("gia_ban");
                 int soluong = (int) rs.getDouble("so_luong");
                 String matheloai = rs.getString("ma_the_loai");
-                String ngonngu = rs.getString("ngon_ngu");
                 String mota = rs.getString("mo_ta");
                 String themAnh = rs.getString("them_anh");
 
                 tacGia tacGia = (new tacGiaDAO().selectById(new tacGia(matacgia, "", null, "")));
                 theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(matheloai, "")));
 
-                ketqua = new sanPham(masanpham, tensanpham, tacGia, namxuatban, gianhap, giagoc, giaban, soluong, theLoai, ngonngu, mota, themAnh);
+                ketqua = new sanPham(masanpham, tensanpham, tacGia, namxuatban, giagoc, giaban, soluong, theLoai, mota, themAnh);
 
                 break;
             }
@@ -116,19 +112,17 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
                 String tensanpham = rs.getString("ten_san_pham");
                 String matacgia = rs.getString("ma_tac_gia");
                 int namxuatban = rs.getInt("nam_xuat_ban");
-                double gianhap = rs.getDouble("gia_nhap");
                 double giagoc = rs.getDouble("gia_goc");
                 double giaban = rs.getDouble("gia_ban");
                 int soluong = (int) rs.getDouble("so_luong");
                 String matheloai = rs.getString("ma_the_loai");
-                String ngonngu = rs.getString("ngon_ngu");
                 String mota = rs.getString("mo_ta");
                 String themAnh = rs.getString("them_anh");
 
                 tacGia tacGia = (new tacGiaDAO().selectById(new tacGia(matacgia, "", null, "")));
                 theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(matheloai, "")));
 
-                ketqua = new sanPham(masanpham, tensanpham, tacGia, namxuatban, gianhap, giagoc, giaban, soluong, theLoai, ngonngu, mota, themAnh);
+                ketqua = new sanPham(masanpham, tensanpham, tacGia, namxuatban, giagoc, giaban, soluong, theLoai, mota, themAnh);
 
                 break;
             }
@@ -146,22 +140,20 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
             Connection con = JDBCutil.getConnection();
 
             String sql = "insert into sanpham (ma_san_pham,ten_san_pham, ma_tac_gia, nam_xuat_ban," +
-                    " gia_nhap, gia_goc, gia_ban, so_luong, ma_the_loai, ngon_ngu, mo_ta,them_anh)" +
-                    " values (?,?,?,?,?,?,?,?,?,?,?,?) ";
+                    "  gia_goc, gia_ban, so_luong, ma_the_loai, mo_ta,them_anh)" +
+                    " values (?,?,?,?,?,?,?,?,?,?) ";
             PreparedStatement st = con.prepareStatement(sql);
 
             st.setString(1, t.getMaSanPham());
             st.setString(2, t.getTenSanPham());
             st.setString(3, t.getTacGia().getMaTacGia());
             st.setInt(4, t.getNamXuatBan());
-            st.setDouble(5, t.getGiaNhap());
-            st.setDouble(6, t.getGiaGoc());
-            st.setDouble(7, t.getGiaBan());
-            st.setInt(8, t.getSoLuong());
-            st.setString(9, t.getTheLoai().getMaTheLoai());
-            st.setString(10, t.getNgonNgu());
-            st.setString(11, t.getMoTa());
-            st.setString(12, t.getThemAnh());
+            st.setDouble(5, t.getGiaGoc());
+            st.setDouble(6, t.getGiaBan());
+            st.setInt(7, t.getSoLuong());
+            st.setString(8, t.getTheLoai().getMaTheLoai());
+            st.setString(9, t.getMoTa());
+            st.setString(10, t.getThemAnh());
 
             ketqua = st.executeUpdate();
 
@@ -227,22 +219,21 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
         try {
             Connection con = JDBCutil.getConnection();
 
-            String sql = "UPDATE sanpham " + " SET " + "ten_san_pham=?, ma_tac_gia=?, nam_xuat_ban=?, gia_nhap=?, gia_goc=?, "
-                    + "gia_ban=?, so_luong=?, ma_the_loai=?, ngon_ngu=?, mo_ta=?, them_anh=?" + " WHERE ma_san_pham=?";
+            String sql = "UPDATE sanpham " + " SET " + "ten_san_pham=?, ma_tac_gia=?, nam_xuat_ban=?, gia_goc=?, "
+                    + "gia_ban=?, so_luong=?, ma_the_loai=?, mo_ta=?, them_anh=?" + " WHERE ma_san_pham=?";
             PreparedStatement st = con.prepareStatement(sql);
 
-            st.setString(1, t.getTenSanPham());
-            st.setString(2, t.getTacGia().getMaTacGia());
-            st.setInt(3, t.getNamXuatBan());
-            st.setDouble(4, t.getGiaNhap());
+            st.setString(1, t.getMaSanPham());
+            st.setString(2, t.getTenSanPham());
+            st.setString(3, t.getTacGia().getMaTacGia());
+            st.setInt(4, t.getNamXuatBan());
             st.setDouble(5, t.getGiaGoc());
             st.setDouble(6, t.getGiaBan());
             st.setInt(7, t.getSoLuong());
             st.setString(8, t.getTheLoai().getMaTheLoai());
-            st.setString(9, t.getNgonNgu());
-            st.setString(10, t.getMoTa());
-            st.setString(11, t.getThemAnh());
-            st.setString(12, t.getMaSanPham());
+            st.setString(9, t.getMoTa());
+            st.setString(10, t.getThemAnh());
+
 
 
             System.out.println(sql);
@@ -279,15 +270,16 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
         }
         return ketqua;
     }
-    public ArrayList<sanPham> searchByNameAndCategory(String input){
+
+    public ArrayList<sanPham> searchByNameAndCategory(String input) {
         ArrayList<sanPham> ketqua = new ArrayList<>();
-        try{
+        try {
             Connection con = JDBCutil.getConnection();
             String sql = "select * from sanpham where ten_san_pham like ? or ma_the_loai like ?";
             PreparedStatement ps = con.prepareStatement(sql);
 
-            ps.setString(1,"%" + input + "%" );
-            ps.setString(2,"%" + input + "%" );
+            ps.setString(1, "%" + input + "%");
+            ps.setString(2, "%" + input + "%");
             System.out.println(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -295,56 +287,158 @@ public class sanPhamDAO implements DAOInterface<sanPham> {
                 String tensanpham = rs.getString("ten_san_pham");
                 String matacgia = rs.getString("ma_tac_gia");
                 int namxuatban = rs.getInt("nam_xuat_ban");
-                double gianhap = rs.getDouble("gia_nhap");
                 double giagoc = rs.getDouble("gia_goc");
                 double giaban = rs.getDouble("gia_ban");
                 int soluong = (int) rs.getDouble("so_luong");
                 String matheloai = rs.getString("ma_the_loai");
-                String ngonngu = rs.getString("ngon_ngu");
                 String mota = rs.getString("mo_ta");
                 String themAnh = rs.getString("them_anh");
                 tacGia tacGia = (new tacGiaDAO().selectById(new tacGia(matacgia, "", null, "")));
                 theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(matheloai, "")));
-                sanPham sp = new sanPham(masanpham,tensanpham,tacGia,namxuatban,gianhap,giagoc,giaban,soluong,theLoai,ngonngu,mota,themAnh);
+                sanPham sp = new sanPham(masanpham, tensanpham, tacGia, namxuatban, giagoc, giaban, soluong, theLoai, mota, themAnh);
                 ketqua.add(sp);
             }
             JDBCutil.closeConnection(con);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return ketqua;
     }
 
-/*    public ArrayList<sanPham> searchByNameAndCategory(String input) {
+    /*    public ArrayList<sanPham> searchByNameAndCategory(String input) {
+            ArrayList<sanPham> ketQua = new ArrayList<>();
+
+            try {
+                 Connection con = JDBCutil.getConnection();
+                String sql = "SELECT * FROM sanpham WHERE ten_san_pham LIKE ? OR ma_the_loai LIKE ?";
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                ps.setString(1, "%" + tenSanPham + "%");
+                ps.setString(2, "%" + maTheLoai + "%");
+
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    String masanpham = rs.getString("ma_san_pham");
+                    String tensanpham = rs.getString("ten_san_pham");
+                    String mota = rs.getString("mo_ta");
+                    double gia = rs.getDouble("gia");
+                    String hinhanh = rs.getString("hinh_anh");
+                    String matheloai = rs.getString("ma_the_loai");
+
+                    // Tạo đối tượng sanPham và thêm vào danh sách kết quả
+                    sanPham sp = new sanPham(masanpham, tensanpham, mota, gia, hinhanh, matheloai);
+                    ketQua.add(sp);
+                }
+                JDBCutil.closeConnection(con);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return ketQua;
+        }*/
+    public ArrayList<sanPham> selectByPage(int start, int pageSize) {
         ArrayList<sanPham> ketQua = new ArrayList<>();
-
         try {
-             Connection con = JDBCutil.getConnection();
-            String sql = "SELECT * FROM sanpham WHERE ten_san_pham LIKE ? OR ma_the_loai LIKE ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-
-            ps.setString(1, "%" + tenSanPham + "%");
-            ps.setString(2, "%" + maTheLoai + "%");
-
-            ResultSet rs = ps.executeQuery();
-
+            Connection con = JDBCutil.getConnection();
+            String sql = "select * from sanpham ORDER BY ma_san_pham LIMIT ?,?";
+            PreparedStatement pr = con.prepareStatement(sql);
+            pr.setInt(1, start);
+            pr.setInt(2, pageSize);
+            ResultSet rs = pr.executeQuery();
+            System.out.println(sql);
             while (rs.next()) {
                 String masanpham = rs.getString("ma_san_pham");
                 String tensanpham = rs.getString("ten_san_pham");
-                String mota = rs.getString("mo_ta");
-                double gia = rs.getDouble("gia");
-                String hinhanh = rs.getString("hinh_anh");
+                String matacgia = rs.getString("ma_tac_gia");
+                int namxuatban = rs.getInt("nam_xuat_ban");
+                double giagoc = rs.getDouble("gia_goc");
+                double giaban = rs.getDouble("gia_ban");
+                int soluong = (int) rs.getDouble("so_luong");
                 String matheloai = rs.getString("ma_the_loai");
+                String mota = rs.getString("mo_ta");
+                String themAnh = rs.getString("them_anh");
 
-                // Tạo đối tượng sanPham và thêm vào danh sách kết quả
-                sanPham sp = new sanPham(masanpham, tensanpham, mota, gia, hinhanh, matheloai);
+                tacGia tacGia = (new tacGiaDAO().selectById(new tacGia(matacgia, "", null, "")));
+                theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(matheloai, "")));
+
+                sanPham sp = new sanPham(masanpham, tensanpham, tacGia, namxuatban, giagoc, giaban, soluong, theLoai, mota, themAnh);
                 ketQua.add(sp);
             }
             JDBCutil.closeConnection(con);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ketQua;
+    }
+
+    public int getTotalProducts() {
+        int total = 0;
+
+        String query = "SELECT COUNT(*) FROM sanpham";
+        try (
+                Connection conn = JDBCutil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+            JDBCutil.closeConnection(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return total;
+    }
 
+
+    public ArrayList<sanPham> getProductsByQuery(String sql){
+        ArrayList<sanPham> ketQua = new ArrayList<>();
+        try{
+            Connection con = JDBCutil.getConnection();
+            PreparedStatement pr = con.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()){
+                String masanpham = rs.getString("ma_san_pham");
+                String tensanpham = rs.getString("ten_san_pham");
+                String matacgia = rs.getString("ma_tac_gia");
+                int namxuatban = rs.getInt("nam_xuat_ban");
+                double giagoc = rs.getDouble("gia_goc");
+                double giaban = rs.getDouble("gia_ban");
+                int soluong = (int) rs.getDouble("so_luong");
+                String matheloai = rs.getString("ma_the_loai");
+                String mota = rs.getString("mo_ta");
+                String themAnh = rs.getString("them_anh");
+
+                tacGia tacGia = (new tacGiaDAO().selectById(new tacGia(matacgia, "", null, "")));
+                theLoai theLoai = (new theLoaiDAO().selectById(new theLoai(matheloai, "")));
+
+                sanPham sp = new sanPham(masanpham, tensanpham, tacGia, namxuatban, giagoc, giaban, soluong, theLoai, mota, themAnh);
+                ketQua.add(sp);
+            }
+            JDBCutil.closeConnection(con);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return ketQua;
-    }*/
+    }
+
+    public  ArrayList<sanPham> getNewest(){
+        String sql = "select * from sanpham order by nam_xuat_ban desc";
+        return getProductsByQuery(sql);
+    }
+    public ArrayList<sanPham> getBestSeller(){
+        String sql = "select * from sanpham Order by so_luong desc";
+        return getProductsByQuery(sql);
+    }
+    public  ArrayList<sanPham> getPriceLowToHigh(){
+        String sql = "select * from sanpham Order by gia_ban asc";
+        return getProductsByQuery(sql);
+    }
+    public ArrayList<sanPham> getPriceHighToLow(){
+        String sql = "select * from sanpham Order by gia_ban desc";
+        return getProductsByQuery(sql);
+    }
+
+
+
 }

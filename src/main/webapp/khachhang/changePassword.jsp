@@ -43,9 +43,11 @@
         }
 
         h1 {
-            font-size: 24px;
-            color: #343a40;
+            font-size: 2rem;
+            color: #495057;
             margin-bottom: 30px;
+            padding-top: 20px;
+            font-weight: bold;
         }
 
         .mb-3 label {
@@ -82,18 +84,22 @@
         .text-center {
             text-align: center;
         }
+
         html, body {
             height: 100%;
             margin: 0;
         }
+
         .wrapper {
             min-height: 80%;
             display: flex;
             flex-direction: column;
         }
-        th{
+
+        th {
             text-align: center;
         }
+
         footer {
             background-color: #f1f1f1;
             padding: 30px;
@@ -102,76 +108,76 @@
         }
 
 
-
     </style>
 </head>
 <div>
-<div class="wrapper"
-<jsp:include page="../header.jsp"></jsp:include>
-<%
-    Object object = session.getAttribute("khachHang");
-    khachHang khachHang = null;
-    if (object != null)
-        khachHang = (khachHang) object;
-    if (khachHang == null) {
+    <div class="wrapper">
+        <jsp:include page="../header.jsp"></jsp:include>
+        <%
+            Object object = session.getAttribute("khachHang");
+            khachHang khachHang = null;
+            if (object != null)
+                khachHang = (khachHang) object;
+            if (khachHang == null) {
 
-%>
-<h1>bạn chưa đăng nhập . Vui lòng trở lại <a href="index.jsp">trang chủ</a></h1>
-<%
-} else {
-    String baoLoi = request.getAttribute("baoLoi") + "";
-    if (baoLoi.equals("null")) {
-        baoLoi = "";
-    }
-%>
-<%
-    String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + request.getContextPath();
-%>
-<div class="container pt-5" style="padding-top: 50px; margin-top: 50px">
-    <div class="text-center">
-        <h1>ĐỔI MẬT KHẨU</h1>
-    </div>
-    <span style="color: red">
+        %>
+        <h1>bạn chưa đăng nhập . Vui lòng trở lại <a href="index.jsp">trang chủ</a></h1>
+        <%
+        } else {
+            String baoLoi = request.getAttribute("baoLoi") + "";
+            if (baoLoi.equals("null")) {
+                baoLoi = "";
+            }
+        %>
+        <%
+            String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+                    + request.getContextPath();
+        %>
+        <div class="container pt-5" style="padding-top: 50px; margin-top: 50px">
+            <div class="text-center">
+                <h1>ĐỔI MẬT KHẨU</h1>
+            </div>
+            <span style="color: red">
         <%=baoLoi%>
     </span>
-    <form action="<%=url%>/khach-hang" method="POST">
-        <input type="hidden" name="hanhDong" value="changePassword">
+            <form action="<%=url%>/khach-hang" method="POST">
+                <input type="hidden" name="hanhDong" value="changePassword">
 
-        <div class="mb-3">
-            <label for="matKhauHienTai" class="form-label">Mật khẩu hiện tại</label>
-            <input type="password" class="form-control" id="matKhauHienTai" name="matKhauHienTai">
+                <div class="mb-3">
+                    <label for="matKhauHienTai" class="form-label">Mật khẩu hiện tại</label>
+                    <input type="password" class="form-control" id="matKhauHienTai" name="matKhauHienTai">
+                </div>
+                <div class="mb-3">
+                    <label for="matKhauMoi" class="form-label">Mật khẩu mới</label>
+                    <input type="password" class="form-control" id="matKhauMoi" name="matKhauMoi">
+                </div>
+                <div class="mb-3">
+                    <label for="matKhauMoiNhapLai" class="form-label">Nhập lại mật khẩu mới</label>
+                    <input type="password" class="form-control" id="matKhauMoiNhapLai" name="matKhauMoiNhapLai">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Lưu mật khẩu</button>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-            <label for="matKhauMoi" class="form-label">Mật khẩu mới</label>
-            <input type="password" class="form-control" id="matKhauMoi" name="matKhauMoi">
-        </div>
-        <div class="mb-3">
-            <label for="matKhauMoiNhapLai" class="form-label">Nhập lại mật khẩu mới</label>
-            <input type="password" class="form-control" id="matKhauMoiNhapLai" name="matKhauMoiNhapLai">
-        </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary">Lưu mật khẩu</button>
-        </div>
-    </form>
-</div>
 
-<%
-    }
-%>
-<%
-    String redirect = (String) request.getAttribute("redirect");
-    if (redirect != null) {
-%>
-<script>
-    redirectToHome();
-</script>
-<%
-    }
-%>
-<footer style="margin-top: 20px; height:200px">
-    <%@include file="../footer.jsp" %>
-</footer>
+        <%
+            }
+        %>
+        <%
+            String redirect = (String) request.getAttribute("redirect");
+            if (redirect != null) {
+        %>
+        <script>
+            redirectToHome();
+        </script>
+        <%
+            }
+        %>
+        <footer style="margin-top: 20px; height:200px">
+            <%@include file="../footer.jsp" %>
+        </footer>
+    </div>
 </div>
 </body>
 </html>

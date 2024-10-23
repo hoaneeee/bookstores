@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <%
     String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
             + request.getContextPath();
@@ -18,6 +20,9 @@
 
 
 </style>
+<%
+    khachHang kh = (khachHang) request.getSession().getAttribute("khachHang");
+%>
 <%
     String baoLoi = request.getAttribute("baoLoi") + "";
     baoLoi = (baoLoi.equals("null")) ? "" : baoLoi;
@@ -85,7 +90,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 bg-infor ">
                     <li class="nav-item dropdown dropstart">
                         <a class="nav-link dropdown-toggle background-taiKhoan" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false"> Tài khoản
+                           data-bs-toggle="dropdown" aria-expanded="false"> <%=kh.getHoVaten()%>
                         </a>
                         <ul class="dropdown-menu">
                             <%
@@ -106,8 +111,8 @@
                             <% } else { %>
                             <li><a class="dropdown-item" href="<%=url%>/khach-hang?hanhDong=mybill">Đơn hàng của tôi</a></li>
                             <li><a class="dropdown-item" href="<%=url%>/khachhang/notify.jsp">Thông báo</a></li>
-                            <li><a class="dropdown-item" href="<%=url%>/khachhang/changeInformation.jsp">Thay đổi thông
-                                tin</a></li>
+                       <%--     <li><a class="dropdown-item" href="<%=url%>/khachhang/changeInformation.jsp">Thay đổi thông
+                                tin</a></li>--%>
                             <li><a class="dropdown-item" href="<%=url%>/khachhang/updateInformation.jsp"> Cập nhật thông tin
                                 </a></li>
                             <li><a class="dropdown-item" href="<%=url%>/khachhang/changePassword.jsp">Đổi mật khẩu</a>

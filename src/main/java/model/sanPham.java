@@ -5,29 +5,25 @@ public class sanPham {
     private String tenSanPham;
     private tacGia tacGia;
     private int namXuatBan;
-    private double giaNhap;
     private double giaGoc;
     private double giaBan;
     private int soLuong;
     private theLoai theLoai;
-    private String ngonNgu;
     private String moTa;
     private String themAnh;
 
     public sanPham() {
     }
 
-    public sanPham(String maSanPham, String tenSanPham, model.tacGia tacGia, int namXuatBan, double giaNhap, double giaGoc, double giaBan, int soLuong, model.theLoai theLoai, String ngonNgu, String moTa, String themAnh) {
+    public sanPham(String maSanPham, String tenSanPham, model.tacGia tacGia, int namXuatBan, double giaGoc, double giaBan, int soLuong, model.theLoai theLoai, String moTa, String themAnh) {
         this.maSanPham = maSanPham;
         this.tenSanPham = tenSanPham;
         this.tacGia = tacGia;
         this.namXuatBan = namXuatBan;
-        this.giaNhap = giaNhap;
         this.giaGoc = giaGoc;
         this.giaBan = giaBan;
         this.soLuong = soLuong;
         this.theLoai = theLoai;
-        this.ngonNgu = ngonNgu;
         this.moTa = moTa;
         this.themAnh = themAnh;
     }
@@ -64,14 +60,6 @@ public class sanPham {
         this.namXuatBan = namXuatBan;
     }
 
-    public double getGiaNhap() {
-        return giaNhap;
-    }
-
-    public void setGiaNhap(double giaNhap) {
-        this.giaNhap = giaNhap;
-    }
-
     public double getGiaGoc() {
         return giaGoc;
     }
@@ -102,14 +90,6 @@ public class sanPham {
 
     public void setTheLoai(model.theLoai theLoai) {
         this.theLoai = theLoai;
-    }
-
-    public String getNgonNgu() {
-        return ngonNgu;
-    }
-
-    public void setNgonNgu(String ngonNgu) {
-        this.ngonNgu = ngonNgu;
     }
 
     public String getMoTa() {

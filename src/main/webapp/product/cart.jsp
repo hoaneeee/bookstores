@@ -28,36 +28,64 @@
 
 
     <style>
-        .deal-soc {
-            background-color: #fef2f2;
-            border: 1px solid #fecaca;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .flash-sale {
-            color: #ef4444;
-            font-weight: bold;
-        }
-
-        .quantity-input {
-            width: 40px;
-            text-align: center;
-        }
-
-        html, body {
-            height: 100%;
-            margin: 0;
+        body {
+            background-color: #f8f9fa;
         }
 
         .container {
-            min-height: 80%;
-            display: flex;
-            flex-direction: column;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .row.bg-light {
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .product-checkbox {
+            margin-right: 10px;
+        }
+
+        .btn-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .quantity-input {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .text-danger {
+            font-weight: bold;
+        }
+
+        .deal-soc, .mb-3 {
+            border-radius: 8px;
+        }
+
+        .deal-soc {
+            background-color: #fce4ec;
+            border: 1px solid #f48fb1;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
         }
 
         footer {
-            background-color: #f1f1f1;
+            padding: 10px 0;
+            text-align: center;
         }
 
     </style>
@@ -109,7 +137,7 @@
         </div>
         <%--so tien ban va giam gia--%>
         <div class="col text-center">
-            <form action="<%=url%>/products-information?hd=update-cart" method="post">
+            <form action="<%=url%>/products-information?hd=update-cart" method="post" class="d-flex justify-content-center align-items-center">
                 <input type="hidden" name="productId" value="<%=sp.getMaSanPham() %>">
                 <button type="submit" name="action" value="decrease" class="btn btn-sm btn-outline-secondary">-</button>
                 <input type="text" name="quantity" value="<%= khachhang.getGioHangList().get(i).quantity %>"
@@ -117,11 +145,12 @@
                 <button type="submit" name="action" value="increase" class="btn btn-sm btn-outline-secondary">+</button>
             </form>
         </div>
+
         <div class="col text-center text-danger"><%=sp.getGiaBan() * khachhang.getGioHangList().get(i).quantity%>
         </div>
         <%--so tien--%>
         <div class="col text-center">
-            <form action="<%=url%>//products-information?hd=delete" method="post">
+            <form action="<%=url%>/products-information?hd=delete" method="post">
                 <input type="hidden" name="Id" value="<%=sp.getMaSanPham() %>">
                 <button type="submit" name="delete" value="xoa" class="btn btn-sm btn-outline-danger"><a>xóa</a>
                 </button>

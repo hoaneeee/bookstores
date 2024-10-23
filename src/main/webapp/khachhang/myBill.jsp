@@ -27,6 +27,34 @@
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
             crossorigin="anonymous"></script>
 </head>
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .wrapper {
+        min-height: 80%;
+        display: flex;
+        flex-direction: column;
+    }
+    .header-title {
+        margin-top: 50px;
+        margin-bottom: 20px;
+    }
+    .table th, .table td {
+        text-align: center;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #e9ecef;
+    }
+    .alert {
+        margin: 20px 0;
+    }
+    footer {
+        background-color: #f1f1f1;
+        padding: 10px 0;
+        text-align: center;
+    }
+</style>
 <% String url= request.getScheme() + "://" + request.getServerName() + ":" +request.getServerPort()+ request.getContextPath();%>
 
 <%
@@ -46,35 +74,17 @@
     String cl = request.getAttribute("cl") +"";
     if(!cl.equals("green")) cl = "red";
 %>
-<style>
-    html, body {
-        height: 100%;
-        margin: 0;
-    }
-    .wrapper {
-        min-height: 80%;
-        display: flex;
-        flex-direction: column;
-    }
-    footer {
-        background-color: #f1f1f1;
-
-    }
-    th{
-        text-align: center;
-    }
-</style>
 <div class="wrapper">
     <jsp:include page="../header.jsp"></jsp:include>
     <div class="container pt-5">
-        <div class="text-center" style="padding-top: 50px">
-            <h1>Don hang cua toi</h1>
+        <div class="text-center header-title " style="padding-top: 50px">
+            <h1>Danh Sách Đơn Hàng Của Tôi</h1>
         </div>
         <div style="color: <%=cl%>" id="baoLoi">
             <%=baoLoi%>
         </div>
         <table class="table table-hover table-bordered" style="border: 1px">
-            <thead>
+            <thead  class="table-light">
             <tr>
                 <th>STT</th>
                 <th>Ma don hang</th>
@@ -113,6 +123,9 @@
 <%
     }
 %>a
+<footer style="margin-top: 20px; height:200px">
+    <%@include file="../footer.jsp" %>
+</footer>
 </body>
 
 </html>
