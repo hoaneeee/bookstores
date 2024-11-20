@@ -4,20 +4,29 @@ import database.donHangDAO;
 import database.khachHangDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import maHoa.maHoa;
 import model.*;
+
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@WebServlet(name = "KhachHangServlets", value = "/khach-hang")
-
-public class KhachHangServlets extends HttpServlet {
+@WebServlet(name = "KhachHangServlets",  urlPatterns = {"/khach-hang", "/upload2"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 50
+)
+public class KhachHangController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String hanhDong = req.getParameter("hanhDong")+"";
@@ -29,14 +38,16 @@ public class KhachHangServlets extends HttpServlet {
             sign_up(req, resp);
         } else if (hanhDong.equals("changePassword")) {
             changePassword(req, resp);
-        } /*else if (hanhDong.equals("changeInformation")) {
+        } else if (hanhDong.equals("changeInformation")) {
             changeInformation(req, resp);
-        }*/else if ("mybill".equals(hanhDong)){
+        }else if ("mybill".equals(hanhDong)){
             mybill(req, resp);
         } else if ("deleteBill".equals(hanhDong)) {
             delete_bill(req, resp);
         } else if ("update".equals(hanhDong)) {
             updateInformation(req, resp);
+        } else if ("info".equals(hanhDong)) {
+            getInformationUser(req, resp);
         }
     }
 
@@ -45,9 +56,9 @@ public class KhachHangServlets extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
-    public static KhachHangServlets ins;
-    public static KhachHangServlets gI(){
-        if(ins == null) ins = new KhachHangServlets();
+    public static KhachHangController ins;
+    public static KhachHangController gI(){
+        if(ins == null) ins = new KhachHangController();
         return ins;
     }
 //dangki
@@ -131,7 +142,7 @@ public class KhachHangServlets extends HttpServlet {
                 }
             }
         }
-        resp.sendRedirect("index.jsp");
+        resp.sendRedirect("/bookStores/home.jsp");
     }
     public void sign_in(String u,String p,HttpSession session){
         khachHang kh = new khachHang();
@@ -144,30 +155,28 @@ public class KhachHangServlets extends HttpServlet {
         String url = "";
         if (khachHang != null) {
             session.setAttribute("khachHang", khachHang);
-            url = "/index.jsp";
+            url = "/home.jsp";
         }
 
     }
-//dangnhap
+
     public void sign_in(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String tenDangNhap = req.getParameter("tenDangNhap");
         String matKhau = req.getParameter("matKhau");
         String rmbMe = req.getParameter("remember-me");
         if(rmbMe != null){
-            // Lưu Cookie
             resp.setContentType("text/html");
             PrintWriter out = resp.getWriter();
 
             Cookie ckU = new Cookie("username",tenDangNhap);
             Cookie ckP = new Cookie("password",matKhau);
 
-            ckU.setMaxAge(60 * 60 * 24 * 30);//set theo giây, đây là lưu 1 tháng
+            ckU.setMaxAge(60 * 60 * 24 * 30);
             ckP.setMaxAge(60 * 60 * 24 * 30);
 
             resp.addCookie(ckU);
             resp.addCookie(ckP);
 
-            //************
         }
         matKhau = maHoa.toSHA(matKhau);
 
@@ -182,7 +191,7 @@ public class KhachHangServlets extends HttpServlet {
 
             HttpSession session = req.getSession();
             session.setAttribute("khachHang", khachHang);
-            url = "/index.jsp";
+            url = "/home.jsp";
         } else {
             req.setAttribute("baoLoi", "tên đăng nhập hoặc mật khẩu không chính xác!");
             url = "/khachhang/dangnhap.jsp";
@@ -223,7 +232,7 @@ public class KhachHangServlets extends HttpServlet {
                     if (khd.changePassword(khachHang)) {
                         baoLoi = "Mật khẩu đã thay đổi thành công. sẽ quay trở lại trang chủ sau 3s";
                         session.setAttribute("khachHang", khachHang);
-                        req.setAttribute("redirect", "index.jsp");
+                        req.setAttribute("redirect", "/home.jsp");
                     } else {
                         baoLoi = "Quá trình thay đổi mật khẩu không thành công!";
                     }
@@ -236,7 +245,7 @@ public class KhachHangServlets extends HttpServlet {
         rd.forward(req, resp);
     }
 
-    /*private void changeInformation(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void changeInformation(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String hoVaTen = req.getParameter("hoVaTen");
         String gioiTinh = req.getParameter("gioiTinh");
         String ngaySinh = req.getParameter("ngaySinh");
@@ -245,6 +254,7 @@ public class KhachHangServlets extends HttpServlet {
         String dienThoai = req.getParameter("dienThoai");
         String email = req.getParameter("email");
         String dongYNhanMail = req.getParameter("dongYNhanMail");
+        String avatar="";
 
         req.setAttribute("hoVaTen", hoVaTen);
         req.setAttribute("gioiTinh", gioiTinh);
@@ -259,7 +269,6 @@ public class KhachHangServlets extends HttpServlet {
         String baoLoi = "";
 
         khachHangDAO khachHangDAO = new khachHangDAO();
-        req.setAttribute("baoLoi", baoLoi);
 
         if (baoLoi.length() > 0) {
             url = "/khachhang/register.jsp";
@@ -269,19 +278,56 @@ public class KhachHangServlets extends HttpServlet {
             if (object != null) {
                 khachHang = (khachHang) object;
                 if (khachHang != null) {
+                    String folder = getServletContext().getRealPath("anhSanPham");
+                    File uploadDir = new File(folder);
+                    if (!uploadDir.exists()) uploadDir.mkdirs();
+                    for (Part filePart : req.getParts()) {
+                        if (filePart != null && filePart.getSubmittedFileName() != null) {
+                            if (filePart.getSize() > 5 * 1024 * 1024) {
+                                System.out.println("File to vl");
+                                return;
+                            }
+                            String fileName = getFileName(filePart);
+                            if (fileName != null) {
+                                File file = new File(folder + File.separator + fileName);
+                                try (InputStream in = filePart.getInputStream()) {
+                                    Files.copy(in, file.toPath());
+                                    avatar = fileName;
+                                }
+                            }
+                        }
+                    }
                     String maKhachHang = khachHang.getMaKhachHang();
                     List<GioHang> lcs  = new ArrayList<>();
-                    khachHang kh = new khachHang(maKhachHang, "", "", hoVaTen, gioiTinh, Date.valueOf(ngaySinh), diaChiKhachHang, diaChiNhanHang, dienThoai, email, dongYNhanMail != null, "",lcs);
-                    khachHangDAO.FixInfor(kh);
+                    khachHang kh = new khachHang(maKhachHang, "", "", hoVaTen, gioiTinh, Date.valueOf(ngaySinh), diaChiKhachHang, diaChiNhanHang, dienThoai, email, dongYNhanMail != null, "",lcs,avatar);
+                    khachHangDAO.UpdateInfor(kh);
                     khachHang kh2 = khachHangDAO.selectById(kh);
                     req.getSession().setAttribute("khachHang", kh2);
-                    url = "/success.jsp";
+                    req.setAttribute("", khachHang);
+                    baoLoi+="update thanh cong";
+                    req.setAttribute("cl", "green");
+                    url = "/khachhang/changeInformation.jsp";
                 }
             }
         }
+        req.setAttribute("baoLoi", baoLoi.toString());
         RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
         rd.forward(req, resp);
-    }*/
+    }
+    //upload
+    public String getFileName(Part p) {
+        String content = p.getHeader("content-disposition");
+        String[] tokens = content.split(";");
+        for (String token : tokens) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+            }
+        }
+        return null;
+    }
+
+
+
     public void mybill(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         khachHang khachHang = (khachHang) session.getAttribute("khachHang");
@@ -353,5 +399,13 @@ public class KhachHangServlets extends HttpServlet {
         RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
         rd.forward(req, resp);
     }
-
+    public void getInformationUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        khachHang khachHang= (khachHang) session.getAttribute("khachHang");
+        khachHangDAO khachHangDAO= new khachHangDAO();
+        khachHangDAO.selectById(khachHang);
+        req.setAttribute("khachHang", khachHang);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher("/khachhang/profileUser.jsp");
+        rd.forward(req, resp);
+    }
 }

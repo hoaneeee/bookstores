@@ -39,6 +39,8 @@
     html, body {
         height: 100%;
         margin: 0;
+        background-color: #f3f4f6;
+        color: #333;
     }
     .wrapper {
         min-height: 80%;
@@ -47,32 +49,62 @@
     }
     footer {
         background-color: #f1f1f1;
-
     }
-    th{
+    th, td {
         text-align: center;
+        vertical-align: middle;
+    }
+    .table-container {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: white;
+    }
+    .table th {
+        background-color: #6272a4;
+        color: #ffffff;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #d8dee9;
+    }
+    #baoLoi {
+        color: <%= cl %>;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+    h1 {
+        font-family: 'Arial', sans-serif;
+        color: #9b59b6;
+        font-size: 3em;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        padding: 10px 0;
     }
 </style>
 <div class="wrapper">
     <jsp:include page="../header.jsp"></jsp:include>
     <div class="container pt-5">
         <div class="text-center" style="padding-top: 50px">
-            <h1>DANH SACH SAN PHAM</h1>
+            <h1>DANH SÁCH SẢN PHẨM </h1>
         </div>
         <div style="color: <%=cl%>" id="baoLoi">
             <%=baoLoi%>
         </div>
-        <table class="table table-hover table-bordered" style="border: 1px">
+        <table class="table table-hover table-bordered table-container" style="border: 1px">
             <thead>
             <tr>
                 <th>STT</th>
-                <th>Ma san pham</th>
-                <th>Ten san pham</th>
-                <th>Gia nhap</th>
-                <th>Gia ban</th>
-                <th>So luong</th>
-                <th>Mo ta</th>
-                <th colspan="2">#</th>
+                <th>Ảnh</th>
+                <th>Mã sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá nhập</th>
+                <th>Giá bán</th>
+                <th>Số lượng</th>
+                <th>Mô tả</th>
+                <th colspan="2">Hành động</th>
 
             </tr>
             </thead>
@@ -85,13 +117,15 @@
             %>
             <tr>
                 <td><%=index++%></td>
+                <td><img src="<%=url%>/anhSanPham/<%=sp.getThemAnh()%>" style="width: 60px; height: auto; border-radius: 4px;"></td>
                 <td><%=sp.getMaSanPham()%></td>
                 <td><%=sp.getTenSanPham()%></td>
+                <td><%=sp.getGianhap()%></td>
                 <td><%=sp.getGiaBan()%></td>
                 <td><%=sp.getSoLuong()%></td>
                 <td><%=sp.getMoTa()%></td>
 
-                <td>Sửa</td>
+                <td><a href="#" class="btn btn-warning">sửa</a></td>
                 <td><a href="<%=url%>/admin-servlet?active=xoa-san-pham&id=<%=sp.getMaSanPham()%>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xóa</a></td>
             </tr>
             <%
@@ -105,4 +139,9 @@
     <%@include file="../footer.jsp"%>
 </footer>
 </body>
+<script>
+    setTimeout(()=>{
+        document.getElementById("baoLoi").style.display="none";
+    },3000)
+</script>
 </html>

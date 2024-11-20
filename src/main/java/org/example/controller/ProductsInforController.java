@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import database.reviewsDAO;
 import database.sanPhamDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -10,13 +11,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.GioHang;
 import model.khachHang;
+import model.reviews;
 import model.sanPham;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "Products_information", value = "/products-information")
-public class Products_information extends HttpServlet {
+public class ProductsInforController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String hd = req.getParameter("hd");
@@ -31,9 +34,11 @@ public class Products_information extends HttpServlet {
         } else if ("search-product".equals(hd)) {
             searchProducts(req, resp);
         } else if ("cart-search".equals(hd)) {
-            cartSearch(req, resp);
+            AddCartSearch(req, resp);
         } else if ("filter".equals(hd)) {
             filterProducts(req, resp);
+        } else if ("category".equals(hd)) {
+            Category(req, resp);
         }
     }
 
@@ -43,11 +48,15 @@ public class Products_information extends HttpServlet {
     }
 
     private void prd_information(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("doGet is called");
         String id = req.getParameter("id");
         sanPhamDAO sanPhamDAO = new sanPhamDAO();
+        reviewsDAO reviewsDAO = new reviewsDAO();
         sanPham tempSanPham = new sanPham();
         tempSanPham.setMaSanPham(id);
         sanPham sanPham = sanPhamDAO.selectById(tempSanPham);
+        List<reviews> reviews = reviewsDAO.findByProductId(id);
+        req.setAttribute("reviews", reviews);
         req.setAttribute("sanPham", sanPham);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/product/products_information.jsp");
@@ -66,14 +75,14 @@ public class Products_information extends HttpServlet {
             rd.forward(req, resp);
             return;
         }
-
         kh.addCart(Integer.parseInt(id), quantity);
+        session.setAttribute("khachHang", kh);
         req.setAttribute("cl", "green");
         req.setAttribute("baoLoi", "Thêm thành công!");
         prd_information(req, resp);
     }
 
-    private void cartSearch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void AddCartSearch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         String quantityString = req.getParameter("quantity");
         int quantity = Integer.parseInt(quantityString);
@@ -142,12 +151,17 @@ public class Products_information extends HttpServlet {
         rd.forward(req, resp);
     }
 
+    //search
     private void searchProducts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String search = req.getParameter("search");
         if (search != null && !search.isEmpty()) {
             sanPhamDAO spd = new sanPhamDAO();
             ArrayList<sanPham> results = spd.searchByNameAndCategory(search);
+            HttpSession session = req.getSession();
+            session.setAttribute("searchResults", results);
+            session.setAttribute("searchQuery", search);
             req.setAttribute("results", results);
+            req.setAttribute("search",search);
             RequestDispatcher rd = req.getRequestDispatcher("/product/search_products.jsp");
             rd.forward(req, resp);
         } else {
@@ -156,32 +170,57 @@ public class Products_information extends HttpServlet {
             RequestDispatcher rd = req.getRequestDispatcher("/index.jsp");
             rd.forward(req, resp);
         }
+
     }
 
     private void filterProducts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String filter = req.getParameter("filter");
+        HttpSession session = req.getSession();
 
+        // Lấy kết quả tìm kiếm từ session
+        ArrayList<sanPham> searchResults = (ArrayList<sanPham>) session.getAttribute("searchResults");
         ArrayList<sanPham> filterPrd = new ArrayList<>();
+        String search = req.getParameter("search");
+        if (search == null) {
+            search = (String) session.getAttribute("searchQuery");
+        }
+
 
         sanPhamDAO spd = new sanPhamDAO();
-        if (filter != null) {
+
+        if (searchResults != null && !searchResults.isEmpty()) {
+
             switch (filter) {
                 case "newest":
-                    filterPrd = spd.getNewest();
+                    filterPrd = spd.filterByNewest(searchResults);
                     break;
                 case "best-seller":
-                    filterPrd = spd.getBestSeller();
+                    filterPrd = spd.filterByBestSeller(searchResults);
                     break;
                 case "low-to-high":
-                    filterPrd = spd.getPriceLowToHigh();
+                    filterPrd = spd.filterByPriceLowToHigh(searchResults);
                     break;
                 case "high-to-low":
-                    filterPrd = spd.getPriceHighToLow();
+                    filterPrd = spd.filterByPriceHighToLow(searchResults);
+                    break;
+                default:
+                    filterPrd = searchResults;
                     break;
             }
         }
+        session.setAttribute("searchQuery", search);
+        req.setAttribute("search", search);
         req.setAttribute("results", filterPrd);
         RequestDispatcher rd = req.getRequestDispatcher("/product/search_products.jsp");
+        rd.forward(req, resp);
+    }
+
+    public void Category(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        sanPhamDAO sanPhamDAO = new sanPhamDAO();
+        ArrayList<sanPham> list = sanPhamDAO.getProductByCategoryId(id);
+        req.setAttribute("listCategory", list);
+        RequestDispatcher rd = req.getRequestDispatcher("/product/categoryProducts.jsp");
         rd.forward(req, resp);
     }
 

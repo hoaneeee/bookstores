@@ -2,6 +2,7 @@ package model;
 
 import com.google.gson.Gson;
 import database.khachHangDAO;
+import database.sanPhamDAO;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ import static java.lang.System.in;
 
 public class khachHang {
     private String maKhachHang;
-    private String tenDangNhap;
     private String matKhau;
-    private  String hoVaten;
+    private String tenDangNhap;
+    private String hoVaten;
     private String gioiTinh;
     private String diaChi;
     private String diaChiNhanHang;
@@ -23,19 +24,27 @@ public class khachHang {
     private boolean dangKyNhanBangTin;
     private String vaiTro;
     private List<GioHang> gioHangList;
+    private String avatar;
 
     public khachHang() {
         gioHangList = new ArrayList<GioHang>();
     }
 
-    public khachHang(String maKhachHang, String tenDangNhap, String matKhau, String email, boolean dangKyNhanBangTin, List<GioHang> gioHangList,String vaiTro) {
+    public khachHang(String maKhachHang, String tenDangNhap, String matKhau, String hoVaten, String gioiTinh, Date ngaySinh, String diaChi, String diaChiNhanHang, String soDienThoai, String email, boolean dangKyNhanBangTin, String vaiTro, List<GioHang> lc,String avatar) {
         this.maKhachHang = maKhachHang;
-        this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
+        this.tenDangNhap = tenDangNhap;
+        this.hoVaten = hoVaten;
+        this.gioiTinh = gioiTinh;
+        this.diaChi = diaChi;
+        this.diaChiNhanHang = diaChiNhanHang;
+        this.ngaySinh = ngaySinh;
+        this.soDienThoai = soDienThoai;
         this.email = email;
         this.dangKyNhanBangTin = dangKyNhanBangTin;
-        this.gioHangList = gioHangList;
         this.vaiTro = vaiTro;
+        this.gioHangList = gioHangList;
+        this.avatar = avatar;
     }
 
     public khachHang(String maKhachHang, String tenDangNhap, String matKhau, String hoVaten, String gioiTinh, Date ngaySinh, String diaChi, String diaChiNhanHang, String soDienThoai, String email, boolean dangKyNhanBangTin, String vaiTro, List<GioHang> lc) {
@@ -54,8 +63,63 @@ public class khachHang {
         this.gioHangList = lc;
     }
 
+    public khachHang(String maKhachHang, String tenDangNhap, String matKhau, String email, boolean dangKyNhanBangTin, List<GioHang> gioHangList, String vaiTro) {
+        this.maKhachHang = maKhachHang;
+        this.tenDangNhap = tenDangNhap;
+        this.matKhau = matKhau;
+        this.email = email;
+        this.dangKyNhanBangTin = dangKyNhanBangTin;
+        this.gioHangList = gioHangList;
+        this.vaiTro = vaiTro;
+    }
+
+    public khachHang(String maKhachHang, String hoVaTen, String avatar) {
+        this.maKhachHang = maKhachHang;
+        this.hoVaten = hoVaTen;
+        this.avatar = avatar;
+    }
+
     public String getMaKhachHang() {
         return maKhachHang;
+    }
+
+    public void deleteCart(int id) {
+        if (gioHangList != null) {
+            for (GioHang g : gioHangList) {
+                if (g.id == id) {
+                    gioHangList.remove(g);
+                    Gson gson = new Gson();
+                    String lc = gson.toJson(gioHangList);
+                    khachHangDAO.updateCart(this.maKhachHang, lc);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void addCart(int id, int quantity) {
+        if (gioHangList == null) gioHangList = new ArrayList<>();
+        for (GioHang g : gioHangList) {
+            if (g.id == id) {
+                g.quantity += quantity;
+                Gson gson = new Gson();
+                String lc = gson.toJson(gioHangList);
+                khachHangDAO.updateCart(this.maKhachHang, lc);
+                return;
+            }
+        }
+        gioHangList.add(new GioHang(id, quantity));
+        Gson gson = new Gson();
+        String lc = gson.toJson(gioHangList);
+        khachHangDAO.updateCart(this.maKhachHang, lc);
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public void setMaKhachHang(String maKhachHang) {
@@ -149,37 +213,6 @@ public class khachHang {
 
     public void setVaiTro(String vaiTro) {
         this.vaiTro = vaiTro;
-    }
-
-    public void deleteCart(int id){
-        if (gioHangList!=null){
-            for (GioHang g : gioHangList) {
-                if (g.id==id){
-                    gioHangList.remove(g);
-                    Gson gson = new Gson();
-                    String lc = gson.toJson(gioHangList);
-                    khachHangDAO.updateCart(this.maKhachHang,lc);
-                    return;
-                }
-            }
-        }
-    }
-
-    public void addCart(int id, int quantity){
-        if(gioHangList == null) gioHangList = new ArrayList<>();
-        for(GioHang g : gioHangList){
-            if(g.id == id){
-                g.quantity += quantity;
-                Gson gson = new Gson();
-                String lc = gson.toJson(gioHangList);
-                khachHangDAO.updateCart(this.maKhachHang,lc);
-                return;
-            }
-        }
-        gioHangList.add(new GioHang(id,quantity));
-        Gson gson = new Gson();
-        String lc = gson.toJson(gioHangList);
-        khachHangDAO.updateCart(this.maKhachHang,lc);
     }
 
     public List<GioHang> getGioHangList() {

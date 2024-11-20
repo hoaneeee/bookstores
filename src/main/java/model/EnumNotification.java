@@ -12,4 +12,12 @@ public enum EnumNotification {
         return value;
     }
 
+    public static EnumNotification fromValue(String value) {
+        for (EnumNotification status : EnumNotification.values()) {
+            if (status.getValue().equals(value)) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value: " + value);
+    }
 }

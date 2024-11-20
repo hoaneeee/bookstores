@@ -9,13 +9,14 @@ public class donHang {
     private String diaChiNhanHang;
     private String hinhThucThanhToan;
     private double tongtien;
+    private double chiphi;
     private Date ngayDatHang;
     private Date ngayGiaoHang;
     private TrangThaiDonHang trangThaiDonHang;
 
 
 
-    public donHang(String maDonHang, model.khachHang khachHang, String diaChiNhanHang, String hinhThucThanhToan, double tongtien, Date ngayDatHang, Date ngayGiaoHang, TrangThaiDonHang trangThaiDonHang) {
+    public donHang(String maDonHang, model.khachHang khachHang, String diaChiNhanHang, String hinhThucThanhToan, double tongtien, Date ngayDatHang, Date ngayGiaoHang, TrangThaiDonHang trangThaiDonHang,double chiphi) {
         this.maDonHang = maDonHang;
         this.khachHang = khachHang;
         this.diaChiNhanHang = diaChiNhanHang;
@@ -24,10 +25,19 @@ public class donHang {
         this.ngayDatHang = ngayDatHang;
         this.ngayGiaoHang = ngayGiaoHang;
         this.trangThaiDonHang = trangThaiDonHang;
+        this.chiphi = chiphi;
     }
 
 
     public donHang() {
+    }
+
+    public double getChiphi() {
+        return chiphi;
+    }
+
+    public void setChiphi(double chiphi) {
+        this.chiphi = chiphi;
     }
 
     public TrangThaiDonHang getTrangThaiDonHang() {

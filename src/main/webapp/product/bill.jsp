@@ -28,22 +28,146 @@
     <style>
         body {
             background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
         }
 
         .shopee-header {
             background-color: #ee4d2d;
+            padding: 10px 0;
+        }
+
+        .shopee-header h1 {
+            font-size: 1.2rem;
+            font-weight: bold;
         }
 
         .btn-outline-secondary {
             border-color: #ee4d2d;
             color: #ee4d2d;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .btn-outline-secondary:hover {
             background-color: #ee4d2d;
             color: white;
         }
+
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .badge {
+            border-radius: 20px;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+        }
+
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+        }
+
+        .d-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+        }
+
+        .text-end {
+            text-align: right;
+        }
+
+        .fw-bold {
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card-body img {
+            width: 60px;
+            height: auto;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .total-cost {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        form {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .form-control {
+            border-radius: 20px;
+            padding: 0.5rem;
+        }
+
+        .footer-btn {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .footer-btn button {
+            border-radius: 20px;
+            padding: 10px 20px;
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+        }
+
+        .footer-btn button:hover {
+            background-color: #c93c26;
+        }
+
+        .payment-method {
+            display: inline-block;
+            padding: 0.5rem;
+            margin-right: 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method.active {
+            background-color: #ee4d2d;
+            color: white;
+        }
+
     </style>
+
 </head>
 <body>
 <%
@@ -65,7 +189,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col">
-                <h1 class="h6 mb-0">Shopee | Thanh Toán</h1>
+                <h1 class="h6 mb-0">Bookstore | Thanh Toán</h1>
             </div>
         </div>
     </div>
@@ -91,8 +215,8 @@
             <h5 class="card-title">Sản phẩm</h5>
             <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
                 <div>
-                    <span class="badge bg-danger me-2">Sách Shopee</span>
-                    <span class="badge bg-primary">Chính hãng</span>
+                    <span class="badge bg-danger me-2">Sách Bookstore</span>
+                    <span class="badge bg-primary">Chính hãng (It could be fake)</span>
                 </div>
                 <small class="text-muted">7 ngày trả hàng</small>
             </div>
@@ -104,6 +228,8 @@
             %>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
+                    <h4><img src="<%=url%>/anhSanPham/<%=sp.getThemAnh()%>"
+                             style="width: 60px; height: auto; border-radius: 4px;"></h4>
                     <h6 class="mb-1">Sách - <%=sp.getTenSanPham()%>
                     </h6>
                     <small class="text-muted">Thể loại: <%=sp.getTheLoai().getTheLoai()%>
@@ -124,62 +250,10 @@
     </div>
 
     <%
-        if (request.getAttribute("totalAmount") != null) {
+        if (request.getAttribute("totalAmount") != null && request.getAttribute("totalCost") != null) {
             String totalMount = (String) request.getAttribute("totalAmount");
+            String totalCost = (String) request.getAttribute("totalCost");
     %>
-    <div class="card">
-        <div class="card-body p-3">
-            <div class="row g-0">
-                <div class="col-md-6 pe-3 border-end">
-                    <div class="mb-3">
-                        <label for="message" class="form-label text-muted mb-2">Lời nhắn:</label>
-                        <input type="text" class="form-control" id="message" placeholder="Lưu ý cho Người bán...">
-                    </div>
-                </div>
-                <div class="col-md-6 ps-3">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span>Đơn vị vận chuyển: <strong>Nhanh</strong></span>
-                        <div>
-                            <a href="#" class="text-primary me-3">Thay Đổi</a>
-                            <span class="text-danger">₫43.900</span>
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <small class="text-muted">
-                            <i class="fas fa-truck text-primary me-1"></i>
-                            Đảm bảo nhận hàng từ 11 Tháng 10 - 12 Tháng 10
-                        </small>
-                    </div>
-                    <div class="mb-3">
-                        <small class="text-muted">
-                            Nhận Voucher trị giá ₫15.000 nếu đơn hàng được giao đến bạn sau ngày 12 Tháng 10 2024
-                            <i class="fas fa-question-circle ms-1"></i>
-                        </small>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-primary">
-                                Được đồng kiểm
-                                <i class="fas fa-question-circle text-muted ms-1"></i>
-                            </span>
-                        <span class="text-danger">
-                                    Tổng số tiền:<%=totalMount%>
-                                    <strong></strong>
-                            </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-body">
-            <h6 class="card-title text-muted mb-3">Shopee Xu</h6>
-            <div class="d-flex justify-content-between align-items-center text-muted">
-                <span>Không thể sử dụng Xu</span>
-                <span>[?]</span>
-            </div>
-        </div>
-    </div>
 
     <div class="card mb-3">
         <div class="card-body">
@@ -214,14 +288,18 @@
                 <span>Tổng thanh toán:</span>
                 <span class="text-danger"><%=totalMount%></span>
             </div>
-            <form action="<%=url%>/bill?click=create_bill" method="POST" class="d-flex justify-content-between align-items-center mb-3"
+            <form action="<%=url%>/bill?click=create_bill" method="POST"
+                  class="d-flex justify-content-between align-items-center mb-3"
                   style="background-color: white; padding-top: 20px;">
                 <small class="text-muted">Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo Điều khoản
-                    Shopee</small>
+                    Bookstore</small>
 
                 <!-- Thêm các input -->
-                <input type="hidden" name="phuongThucThanhToan" id="phuongThucThanhToan" value="Thanh toán khi nhận hàng">
+                <input type="hidden" name="phuongThucThanhToan" id="phuongThucThanhToan"
+                       value="Thanh toán khi nhận hàng">
                 <input type="hidden" name="totalAmount" value="<%= totalMount %>">
+                <input type="hidden" name="totalCost" value="<%=totalCost %>">
+
 
                 <button type="submit" class="btn btn-danger">Đặt hàng</button>
             </form>
@@ -229,6 +307,7 @@
     </div>
     <%}%>
 </main>
+<%}%>
 <script>
     function selectPaymentMethod(method) {
         document.getElementById('phuongThucThanhToan').value = method;
@@ -240,6 +319,4 @@
     }
 </script>
 </body>
-<%}%>
-
 </html>

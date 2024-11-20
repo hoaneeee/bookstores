@@ -15,7 +15,6 @@ public class chiTietDonHangDAO implements DAOInterface<chiTietDonHang> {
     @Override
     public ArrayList<chiTietDonHang> selectAll() {
         ArrayList<chiTietDonHang> ketQua = new ArrayList<chiTietDonHang>();
-
         try {
             // Bước 1: tạo kết nối đến CSDL
             Connection con = JDBCutil.getConnection();
@@ -35,17 +34,11 @@ public class chiTietDonHangDAO implements DAOInterface<chiTietDonHang> {
                 String donhang = rs.getString("ma_don_hang");
                 String sanpham = rs.getString("ma_san_pham");
                 double soluong = rs.getDouble("so_luong");
-                double giagoc = rs.getDouble("gia_goc");
-                double giamgia = rs.getDouble("giam_gia");
-                double giaban = rs.getDouble("gia_ban");
-                double thuevat = rs.getDouble("thue_vat");
-                double tongtien = rs.getDouble("tong_tien");
 
-                donHang dh = new donHangDAO().selectById(new donHang(donhang, null, "", "", 0, null, null,null));
-                sanPham sp = new sanPhamDAO().selectById(new sanPham(sanpham, "", null, 0, 0, 0, 0, null, "",""));
+                donHang dh = new donHangDAO().selectById(new donHang(donhang, null, "", "", 0, null, null,null,0));
+                sanPham sp = new sanPhamDAO().selectById(new sanPham(sanpham, "", null, 0, 0, 0, 0, null, "","",0));
 
-                chiTietDonHang ctdh = new chiTietDonHang(maChiTietDonHang, dh, sp, soluong, giagoc, giamgia, giaban,
-                        thuevat, tongtien);
+                chiTietDonHang ctdh = new chiTietDonHang(maChiTietDonHang, dh, sp, soluong);
                 ketQua.add(ctdh);
             }
 
@@ -78,17 +71,11 @@ public class chiTietDonHangDAO implements DAOInterface<chiTietDonHang> {
                 String donhang = rs.getString("ma_don_hang");
                 String sanpham = rs.getString("ma_san_pham");
                 double soluong = rs.getDouble("so_luong");
-                double giagoc = rs.getDouble("gia_goc");
-                double giamgia = rs.getDouble("giam_gia");
-                double giaban = rs.getDouble("gia_ban");
-                double thuevat = rs.getDouble("thue_vat");
-                double tongtien = rs.getDouble("tong_tien");
 
-                donHang dh = new donHangDAO().selectById(new donHang(donhang, null,"", "", 0, null, null,null));
-                sanPham sp = new sanPhamDAO().selectById(new sanPham(sanpham, "", null, 0, 0, 0, 0, null, "",""));
+                donHang dh = new donHangDAO().selectById(new donHang(donhang, null,"", "", 0, null, null,null,0));
+                sanPham sp = new sanPhamDAO().selectById(new sanPham(sanpham, "", null, 0, 0, 0, 0, null, "","",0));
 
-                ketQua = new chiTietDonHang(maChiTietDonHang, dh, sp, soluong, giagoc, giamgia, giaban, thuevat,
-                        tongtien);
+                ketQua = new chiTietDonHang(maChiTietDonHang, dh, sp, soluong);
                 break;
             }
             // Bước 5:
@@ -110,19 +97,15 @@ public class chiTietDonHangDAO implements DAOInterface<chiTietDonHang> {
             Connection con = JDBCutil.getConnection();
 
             // Bước 2: tạo ra đối tượng statement
-            String sql = "INSERT INTO chitietdonhang (ma_chi_tiet_don_hang, ma_don_hang,ma_san_pham, so_luong, gia_goc,giam_gia,gia_ban,thue_vat,tong_tien) "
-                    + " VALUES (?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO chitietdonhang (ma_chi_tiet_don_hang, ma_don_hang,ma_san_pham, so_luong) "
+                    + " VALUES (?,?,?,?)";
 
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, t.getMaChiTietDonHang());
             st.setString(2, t.getDonHang().getMaDonHang());
             st.setString(3, t.getSanPham().getMaSanPham());
             st.setDouble(4, t.getSoLuong());
-            st.setDouble(5, t.getGiaGoc());
-            st.setDouble(6, t.getGiamGia());
-            st.setDouble(7, t.getGiaBan());
-            st.setDouble(8, t.getThueVAT());
-            st.setDouble(9, t.getTongTien());
+
             // Bước 3: thực thi câu lệnh SQL
             ketQua = st.executeUpdate();
 
@@ -197,19 +180,14 @@ public class chiTietDonHangDAO implements DAOInterface<chiTietDonHang> {
             Connection con = JDBCutil.getConnection();
 
             // Bước 2: tạo ra đối tượng statement
-            String sql = "UPDATE chitietdonhang SET ma_don_hang=?, ma_san_pham=?, so_luong=?, giagoc=?, giamgia=?, giaban=?, thuevat=?, tongtien=?"
+            String sql = "UPDATE chitietdonhang SET ma_don_hang=?, ma_san_pham=?, so_luong=?"
                     + " WHERE machitietdonhang=?";
 
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, t.getDonHang().getMaDonHang());
             st.setString(2, t.getSanPham().getMaSanPham());
             st.setDouble(3, t.getSoLuong());
-            st.setDouble(4, t.getGiaGoc());
-            st.setDouble(5, t.getGiamGia());
-            st.setDouble(6, t.getGiaBan());
-            st.setDouble(7, t.getThueVAT());
-            st.setDouble(8, t.getTongTien());
-            st.setString(9, t.getMaChiTietDonHang());
+            st.setString(4, t.getMaChiTietDonHang());
 
             // Bước 3: thực thi câu lệnh SQL
 

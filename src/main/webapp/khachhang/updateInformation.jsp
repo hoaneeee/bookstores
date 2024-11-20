@@ -23,27 +23,32 @@
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/font/fontawesome-free-6.4.0-web/css/all.min.css">
     <style>
+
         body {
-            background: linear-gradient(135deg, #e0f7fa, #80deea);
-            background-attachment: fixed;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+
         }
 
-        .container {
+
+        .padding_top {
+            max-width: 600px;
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 30px;
             margin-top: 50px;
             border: 1px solid #dee2e6;
+            padding-top: 50px;
         }
 
         h2 {
-            color: #00796b;
+            font-weight: bold;
+            color:#ff6666;
         }
 
         .btn-primary {
-            background-color: #0288d1;
+            background-color: #ff6666;
             border: none;
         }
 
@@ -59,10 +64,6 @@
         label {
             color: #455a64;
         }
-        .padding_top{
-            padding-top: 50px;
-        }
-
 
     </style>
 
@@ -97,7 +98,7 @@
     String dienThoai = request.getAttribute("dienThoai") + "";
     dienThoai = (dienThoai.equals("null")) ? "" : dienThoai;%>
 <div class="container mt-5 padding_top">
-    <h2 class="text-center mb-4">Cập Nhật Thông Tin Người Dùng</h2>
+    <h2 class="text-center mb-4">Cập Nhật Thông Tin</h2>
     <div style="color: <%=cl%>" id="baoLoi">
         <%=baoLoi%>
     </div>
@@ -148,5 +149,10 @@
 <footer>
     <%@include file="../footer.jsp"%>
 </footer>
+<script>
+    setTimeout(()=>{
+        document.getElementById("baoLoi").style.display="none";
+    },3000);
+</script>
 </body>
 </html>

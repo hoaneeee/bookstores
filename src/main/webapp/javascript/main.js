@@ -20,6 +20,6 @@ function xuLyChonDongY() {
 
 function redirectToHome(){
     setTimeout(function () {
-        window.location.href = "index.jsp";
+        window.location.href = "home.jsp";
     },3000);
 }

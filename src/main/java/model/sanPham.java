@@ -1,5 +1,7 @@
 package model;
 
+import java.text.DecimalFormat;
+
 public class sanPham {
     private String maSanPham;
     private String tenSanPham;
@@ -11,11 +13,11 @@ public class sanPham {
     private theLoai theLoai;
     private String moTa;
     private String themAnh;
-
+    private double gianhap;
     public sanPham() {
     }
-
-    public sanPham(String maSanPham, String tenSanPham, model.tacGia tacGia, int namXuatBan, double giaGoc, double giaBan, int soLuong, model.theLoai theLoai, String moTa, String themAnh) {
+    private static final DecimalFormat df = new DecimalFormat("#,###.00");
+    public sanPham(String maSanPham, String tenSanPham, model.tacGia tacGia, int namXuatBan, double giaGoc, double giaBan, int soLuong, model.theLoai theLoai, String moTa, String themAnh,double gianhap) {
         this.maSanPham = maSanPham;
         this.tenSanPham = tenSanPham;
         this.tacGia = tacGia;
@@ -26,6 +28,19 @@ public class sanPham {
         this.theLoai = theLoai;
         this.moTa = moTa;
         this.themAnh = themAnh;
+        this.gianhap = gianhap;
+    }
+
+    public sanPham(String maSanPham) {
+        this.maSanPham = maSanPham;
+    }
+
+    public double getGianhap() {
+        return gianhap;
+    }
+
+    public void setGianhap(double gianhap) {
+        this.gianhap = gianhap;
     }
 
     public String getMaSanPham() {

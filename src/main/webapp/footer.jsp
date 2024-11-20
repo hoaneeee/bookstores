@@ -14,7 +14,6 @@
         background-color: #333;
         color: white;
         padding: 40px 0;
-        margin-top: 50px;
     }
 
     .footer h5 {
@@ -39,18 +38,23 @@
     .footer ul li a:hover {
         color: #ffc107;
     }
+    .social{
+        margin-left: 150px;
+    }
+    .social-a{
+        margin-left: 1px;
+    }
 
     .social-icons {
         font-size: 24px;
     }
 
     .social-icons a {
-        color: white;
-        margin-right: 15px;
+        color: #ffffff;
     }
 
     .social-icons a:hover {
-        color: #ffc107;
+        color: #ffcc33;
     }
 
     .footer-bottom {
@@ -84,17 +88,17 @@
             <div class="col-md-4 mb-4">
                 <h5>Thông Tin Liên Hệ</h5>
                 <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> 123 Đường ABC, Quận XYZ, TP.HCM</li>
-                    <li><i class="fas fa-phone"></i> +84 123 456 789</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Bắc Ninh , TP.Bắc Ninh</li>
+                    <li><i class="fas fa-phone"></i> +84 34 768 2672 </li>
                     <li><i class="fas fa-envelope"></i> contact@bookstore.com</li>
                 </ul>
 
                 <!-- Social Icons -->
-                <div class="social-icons mt-3">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                <div class="social-icons social mt-3">
+                    <a href="#"><i class="social-a fab fa-facebook"></i></a>
+                    <a href="#"><i class="social-a fab fa-twitter"></i></a>
+                    <a href="#"><i class="social-a fab fa-instagram"></i></a>
+                    <a href="#"><i class="social-a fab fa-linkedin"></i></a>
                 </div>
             </div>
         </div>

@@ -40,6 +40,8 @@
     html, body {
         height: 100%;
         margin: 0;
+        background-color: #f3f4f6;
+        color: #333;
     }
     .wrapper {
         min-height: 80%;
@@ -48,11 +50,41 @@
     }
     footer {
         background-color: #f1f1f1;
-
     }
-    th{
+    th, td {
         text-align: center;
+        vertical-align: middle;
     }
+    .table-container {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: white;
+    }
+    .table th {
+        background-color: #6272a4;
+        color: #ffffff;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #d8dee9;
+    }
+    #baoLoi {
+        color: <%= cl %>;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+    h1 {
+        font-family: 'Arial', sans-serif;
+        color: #9b59b6;
+        font-size: 3em;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        padding: 10px 0;
+    }
+
 </style>
 <div class="wrapper">
     <jsp:include page="../header.jsp"></jsp:include>
@@ -63,7 +95,7 @@
         <div style="color: <%=cl%>" id="baoLoi">
             <%=baoLoi%>
         </div>
-        <table class="table table-hover table-bordered" style="border: 1px">
+        <table class="table table-hover table-bordered table-container" style="border: 1px">
             <thead>
             <tr>
                 <th>STT</th>
@@ -94,7 +126,7 @@
                 <td><%=kh.getDiaChi()%></td>
                 <td><%=kh.getNgaySinh()%></td>
                 <td><%=kh.getEmail()%></td>
-                <td><a href="<%=url%>/admin-servlet?active=xoa-user&id=<%=kh.getMaKhachHang()%>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xóa</a></td>
+                <td><a href="<%=url%>/admin-servlet?active=delete&id=<%=kh.getMaKhachHang()%>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xóa</a></td>
             </tr>
             <%
                 }
@@ -106,5 +138,10 @@
 <footer>
     <%@include file="../footer.jsp"%>
 </footer>
+<script>
+    setTimeout(()=>{
+        document.getElementById("baoLoi").style.display="none";
+    },3000);
+</script>
 </body>
 </html>

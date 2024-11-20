@@ -14,6 +14,8 @@
             integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/font/fontawesome-free-6.4.0-web/css/all.min.css">
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -28,11 +30,16 @@
         }
 
         h1 {
-            font-size: 2.5rem;
-            color: #343a40;
-            margin-bottom: 20px;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            font-size: 3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            padding: 10px 0;
         }
-
         .form-label {
             font-weight: bold;
         }
@@ -142,6 +149,10 @@
 
     String moTa = request.getAttribute("moTa") + "";
     moTa = (moTa.equals("null")) ? "" : moTa;
+
+    String gianhap = request.getAttribute("gianhap")+ "";
+    gianhap = (moTa.equals("null")) ? "" : moTa;
+
 %>
 <jsp:include page="../header.jsp"></jsp:include>
 <div class="container pt-5">
@@ -205,6 +216,10 @@
                     <input type="text" class="form-control" id="moTa" name="moTa" value="<%= moTa %>">
                 </div>
                 <div class="mb-3">
+                    <label for="gianhap" class="form-label">Gia nhap</label>
+                    <input type="number" class="form-control" id="gianhap" name="gianhap" value="<%=gianhap %>">
+                </div>
+                <div class="mb-3">
                     <label for="themAnh" class="form-label">Thêm Ảnh <span class="red">*</span></label>
                     <input type="file" class="form-control" id="themAnh" name="themAnh" required>
                 </div>
@@ -218,5 +233,9 @@
     </form>
 </div>
 <%@ include file="../footer.jsp" %>
+<script>
+    setTimeout(()=>{
+        document.getElementById("baoLoi").style.display="none";
+    },3000);</script>
 </body>
 </html>

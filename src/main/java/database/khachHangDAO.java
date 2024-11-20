@@ -38,6 +38,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                 boolean dangKyNhanBangTin = rs.getBoolean("dang_ky_nhan_ban_tin");
                 String vaiTro = rs.getString("vai_tro");
                 String lc = rs.getString("gio_hang");
+                String avatar = rs.getString("avatar");
                 List<GioHang> lcs = new ArrayList<>();
                 if(lc != null && !lc.isEmpty()){
                     Gson gson = new Gson();
@@ -45,7 +46,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                     lcs = gson.fromJson(lc,listType);
                 }
 
-                khachHang kh= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
+                khachHang kh= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs,avatar);
                 ketqua.add(kh);
             }
             JDBCutil.closeConnection(con);
@@ -82,6 +83,8 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                 boolean dangKyNhanBangTin = rs.getBoolean("dang_ky_nhan_ban_tin");
                 String vaiTro= rs.getString("vai_tro");
                 String lc = rs.getString("gio_hang");
+                String avatar = rs.getString("avatar");
+
                 // load thông tin giỏ hàng
                 List<GioHang> lcs = new ArrayList<>();
                 if(lc != null && !lc.isEmpty()){
@@ -90,7 +93,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                     lcs = gson.fromJson(lc,listType);
                 }
 
-                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
+                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs,avatar);
                 break;
             }
             JDBCutil.closeConnection(con);
@@ -228,7 +231,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
 
             String sql = "UPDATE khachhang " + " SET " + " ten_dang_nhap=?" + ", mat_khau=?" + ", ho_va_ten=?" + ", gioi_tinh=?" +
                     ", ngay_sinh=?" + ", dia_chi=?" + ", dia_chi_nhan_hang=?" + ", so_dien_thoai=?"
-                    + ", email=?" + ", dang_ky_nhan_ban_tin=?"+",vai_tro=?" + " WHERE ma_khach_hang=?";
+                    + ", email=?" + ", dang_ky_nhan_ban_tin=?"+",vai_tro=?" +",avatar=?" + " WHERE ma_khach_hang=?";
             PreparedStatement st = con.prepareStatement(sql);
 
             st.setString(1, t.getTenDangNhap());
@@ -306,6 +309,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                 boolean dangKyNhanBangTin = rs.getBoolean("dang_ky_nhan_ban_tin");
                 String vaiTro = rs.getString("vai_tro");
                 String lc = rs.getString("gio_hang");
+                String avatar = rs.getString("avatar");
                 List<GioHang> lcs = new ArrayList<>();
                 if(lc != null && !lc.isEmpty()){
                     Gson gson = new Gson();
@@ -313,7 +317,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
                     lcs = gson.fromJson(lc,listType);
                 }
 
-                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs);
+                ketqua= new  khachHang(maKhacHang,tenDangNhap,matKhau,hoVaTen,gioiTinh,ngaySinh,diaChi,diaChiNhanHang,soDienThoai,email,dangKyNhanBangTin,vaiTro,lcs,avatar);
                 break;
             }
             JDBCutil.closeConnection(con);
@@ -389,7 +393,7 @@ public class khachHangDAO implements DAOInterface<khachHang> {
 
             String sql = "UPDATE khachhang " + " SET " + "ho_va_ten=?" + ", gioi_tinh=?" +
                     ", ngay_sinh=?" + ", dia_chi=?" + ", dia_chi_nhan_hang=?" + ", so_dien_thoai=?"
-                     + " WHERE ma_khach_hang=?";
+                    + ", email=?" + ", dang_ky_nhan_ban_tin=? "+",avatar=?" + " WHERE ma_khach_hang=?";
             PreparedStatement st = con.prepareStatement(sql);
 
             st.setString(1, t.getHoVaten());
@@ -398,7 +402,10 @@ public class khachHangDAO implements DAOInterface<khachHang> {
             st.setString(4, t.getDiaChi());
             st.setString(5, t.getDiaChiNhanHang());
             st.setString(6, t.getSoDienThoai());
-            st.setString(7, t.getMaKhachHang());
+            st.setString(7, t.getEmail());
+            st.setBoolean(8, t.isDangKyNhanBangTin());
+            st.setString(9,t.getAvatar());
+            st.setString(10, t.getMaKhachHang());
 
             ketqua = st.executeUpdate();
 
@@ -410,6 +417,5 @@ public class khachHangDAO implements DAOInterface<khachHang> {
             e.printStackTrace();
         }
         return ketqua;
-
     }
 }

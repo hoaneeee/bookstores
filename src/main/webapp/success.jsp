@@ -11,7 +11,7 @@
     <title>Success</title>
 </head>
 <body>
-<h1 style="text-align: center">ĐĂNG KÍ THÀNH CÔNG , VUI LÒNG TRỞ LẠI <a href="index.jsp">TRANG CHỦ
+<h1 style="text-align: center">ĐĂNG KÍ THÀNH CÔNG , VUI LÒNG TRỞ LẠI <a href="home.jsp">TRANG CHỦ
 </a>
 </h1>
 </body>

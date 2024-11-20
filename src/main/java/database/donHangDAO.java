@@ -29,13 +29,14 @@ public class donHangDAO implements DAOInterface<donHang>{
                 double sotienconthieu = rs.getDouble("so_tien_con_thieu");
                 Date ngaydathang = rs.getDate("ngay_dat_hang");
                 Date ngaygiaohang= rs.getDate("ngay_giao_hang");
-                String trangThaiString = rs.getString("trang_thai"); // Giả sử có cột trạng thái trong DB
+                String trangThaiString = rs.getString("trang_thai");
                 TrangThaiDonHang trangThai = TrangThaiDonHang.valueOf(trangThaiString);
+                Double chiphi = rs.getDouble("chi_phi");
 
                 khachHang kh1= new khachHang();
                 kh1.setMaKhachHang(makhachhang);
                 khachHang kh= new khachHangDAO().selectById(kh1);
-                donHang dh = new donHang(madonhang,kh,diachinhanhang,hinhthucthanhtoan,sotienconthieu,ngaydathang,ngaygiaohang,trangThai);
+                donHang dh = new donHang(madonhang,kh,diachinhanhang,hinhthucthanhtoan,sotienconthieu,ngaydathang,ngaygiaohang,trangThai,chiphi);
                 dh.setTrangThaiDonHang(trangThai);
                 ketqua.add(dh);
             }
@@ -68,12 +69,13 @@ public class donHangDAO implements DAOInterface<donHang>{
                 Date ngaygiaohang= rs.getDate("ngay_giao_hang");
                 String trangThaiString = rs.getString("trang_thai"); // Giả sử có cột trạng thái trong DB
                 TrangThaiDonHang trangThai = TrangThaiDonHang.valueOf(trangThaiString);
+                Double chiphi= rs.getDouble("chi_phi");
 
 
                 khachHang kh1= new khachHang();
                 kh1.setMaKhachHang(makhachhang);
                 khachHang kh= new khachHangDAO().selectById(kh1);
-                ketqua = new donHang(madonhang,kh,diachinhanhang,hinhthucthanhtoan,sotienconthieu,ngaydathang,ngaygiaohang,trangThai);
+                ketqua = new donHang(madonhang,kh,diachinhanhang,hinhthucthanhtoan,sotienconthieu,ngaydathang,ngaygiaohang,trangThai,chiphi);
 
                 break;
 
@@ -102,11 +104,12 @@ public class donHangDAO implements DAOInterface<donHang>{
                 Date ngaygiaohang= rs.getDate("ngay_giao_hang");
                 String trangThaiString = rs.getString("trang_thai"); // Giả sử có cột trạng thái trong DB
                 TrangThaiDonHang trangThai = TrangThaiDonHang.valueOf(trangThaiString);
+                Double chiphi = rs.getDouble("chi_phi");
 
                 khachHang kh1= new khachHang();
                 kh1.setMaKhachHang(makhachhang);
                 khachHang kh= new khachHangDAO().selectById(kh1);
-                ketqua = new donHang(madonhang,kh,diachinhanhang,hinhthucthanhtoan,sotienconthieu,ngaydathang,ngaygiaohang,trangThai);
+                ketqua = new donHang(madonhang,kh,diachinhanhang,hinhthucthanhtoan,sotienconthieu,ngaydathang,ngaygiaohang,trangThai,chiphi);
 
                 break;
 
@@ -124,7 +127,7 @@ public class donHangDAO implements DAOInterface<donHang>{
             Connection con = JDBCutil.getConnection();
 
             String sql = "insert into donhang (ma_don_hang, ma_khach_hang, dia_chi_nhan_hang,hinh_thuc_thanh_toan" +
-                    ",so_tien_con_thieu,ngay_dat_hang,ngay_giao_hang,trang_thai) values (?, ?, ?, ?, ?, ?, ?,?)";
+                    ",so_tien_con_thieu,ngay_dat_hang,ngay_giao_hang,trang_thai,chi_phi) values (?, ?, ?, ?, ?, ?, ?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,t.getMaDonHang());
             st.setString(2,t.getKhachHang().getMaKhachHang());
@@ -136,6 +139,7 @@ public class donHangDAO implements DAOInterface<donHang>{
             LocalDate ngayNhanHang = ngaydathang.plusDays(5);
             st.setDate(7,Date.valueOf(ngayNhanHang));
             st.setString(8,t.getTrangThaiDonHang().name());
+            st.setDouble(9,t.getChiphi());
 
             ketqua=st.executeUpdate();
             JDBCutil.closeConnection(con);
@@ -187,7 +191,7 @@ public class donHangDAO implements DAOInterface<donHang>{
             Connection con = JDBCutil.getConnection();
             String sql = "UPDATE donhang" + " SET " + "ma_khach_hang=?" + ",dia_chi_nhan_hang=?"
                     + ",hinh_thuc_thanh_toan=?"+ ",so_tien_con_thieu=?" + ",ngay_dat_hang=?"
-                    + ",ngay_giao_hang=?" + ",trang_thai=?"+ " WHERE ma_don_hang=?";
+                    + ",ngay_giao_hang=?" + ",trang_thai=?"+",chi_phi=?" +" WHERE ma_don_hang=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1,t.getKhachHang().getMaKhachHang());
             st.setString(2, t.getDiaChiNhanHang());
@@ -196,7 +200,8 @@ public class donHangDAO implements DAOInterface<donHang>{
             st.setDate(5,t.getNgayDatHang());
             st.setDate(6,t.getNgayGiaoHang());
             st.setString(7,t.getTrangThaiDonHang().name());
-            st.setString(8,t.getMaDonHang());
+            st.setDouble(8,t.getChiphi());
+            st.setString(9,t.getMaDonHang());
 
             ketqua = st.executeUpdate();
             JDBCutil.closeConnection(con);

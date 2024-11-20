@@ -1,4 +1,6 @@
-<%--
+<%@ page import="model.Notification" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="model.khachHang" %><%--
   Created by IntelliJ IDEA.
   User: Acer
   Date: 13/10/2024
@@ -74,8 +76,13 @@
     .sub-menu-item.active, .nav-link.active {
         font-weight: bold;
     }
+
 </style>
 </head>
+<%
+    String url = request.getScheme() +"://"+ request.getServerName() +":"+ request.getServerPort() + request.getContextPath();
+    khachHang kh = (khachHang) request.getSession().getAttribute("khachHang");
+%>
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
 <div class="container mt-5 wrapper" style="padding-top: 50px">
@@ -83,67 +90,43 @@
         <!-- Left Sidebar -->
         <div class="col-md-3 bg-light p-3" style="padding-top: 20px; margin-top: 24px; margin-bottom: 0;">
             <div class="d-flex align-items-center mb-4">
-                <img src="/api/placeholder/40/40" alt="User Avatar" class="user-avatar rounded-circle me-2">
+                <img src="<%=url%>/anhSanPham/<%=kh.getAvatar()%>" alt="User Avatar" class="user-avatar rounded-circle me-2">
                 <div>
-                    <h5 class="mb-0">hoadam487</h5>
+                    <h5 class="mb-0"><%=kh.getHoVaten()%></h5>
                     <a href="#" class="text-decoration-none">Sửa Hồ Sơ</a>
                 </div>
             </div>
             <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="toggleSubMenu('accountSubMenu')">Tài Khoản Của Tôi</a>
-                    <ul id="accountSubMenu" class="sub-menu" style="display: none;">
-                        <li class="sub-menu-item"><a href="#" onclick="showContent('accountOverview')">Tài khoản của
-                            tôi</a></li>
-                        <li class="sub-menu-item"><a href="#" onclick="showContent('address')">Địa chỉ</a></li>
-                        <li class="sub-menu-item"><a href="#" onclick="showContent('changePassword')">Đổi mật khẩu</a>
-                        </li>
-                        <li class="sub-menu-item"><a href="#" onclick="showContent('linkedBank')">Ngân hàng liên kết</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="#">Đơn Mua</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" onclick="showContent('notifications')">Thông Báo</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="#" onclick="showContent('notifications')">Thông Báo</a></li>
             </ul>
         </div>
 
         <!-- Main Content Area -->
         <div class="col-md-9 p-3" style="background-color: white">
-            <div id="accountOverview" class="content-section" style="display: none;">
-                <h3>Tài khoản của tôi</h3>
-                <p>Đây là nội dung tổng quan về tài khoản của bạn.</p>
-                <!-- Thêm nội dung chi tiết về tài khoản  -->
-            </div>
-            <div id="address" class="content-section" style="display: none;">
-                <h3>Địa chỉ</h3>
-                <p>Quản lý địa chỉ giao hàng của bạn.</p>
-                <!-- Thêm form quản lý địa chỉ -->
-            </div>
-            <div id="changePassword" class="content-section" style="display: none;">
-                <h3>Đổi mật khẩu</h3>
-                <p>Thay đổi mật khẩu tài khoản của bạn.</p>
-                <!-- Thêm form đổi mật khẩu -->
-            </div>
-            <div id="linkedBank" class="content-section" style="display: none;">
-                <h3>Ngân hàng liên kết</h3>
-                <p>Quản lý tài khoản ngân hàng liên kết của bạn.</p>
-                <!-- Thêm thông tin về ngân hàng liên kết-->
-            </div>
-            <div id="notifications" class="content-section" style="display: none;">
+            <div id="notifications" class="content-section" style="display: block;">
                 <h3 style="text-align: center">Thông Báo</h3>
                 <div class="notification-list">
+                    <%
+                        // Lấy danh sách thông báo từ request
+                        ArrayList<Notification> notifications = (ArrayList<Notification>) request.getAttribute("notifications");
+                        if (notifications != null && !notifications.isEmpty()) {
+                            for (Notification notification : notifications) {
+                    %>
                     <div class="notification-item d-flex align-items-center">
-                        <img src="/api/placeholder/50/50" alt="Notification Icon" class="me-3">
                         <div>
-                            <h5 class="mb-1">Chấp nhận yêu cầu hủy đơn</h5>
-                            <p class="mb-1">Yêu cầu hủy đơn hàng của bạn đã được chấp nhận. Đơn hàng 240914VNH5A4T7 đã
-                                được hủy thành công.</p>
-                            <small class="text-muted">11:24 14-09-2024</small>
+                            <p class="mb-1"><%= notification.getMessage() %></p>
+                            <small class="text-muted"><%= notification.getCreated_at() %></small>
                         </div>
                         <a href="#" class="ms-auto btn btn-sm btn-outline-primary">Xem Chi Tiết</a>
                     </div>
-
+                    <%
+                        }
+                    } else {
+                    %>
+                    <p>Không có thông báo nào.</p>
+                    <%
+                        }
+                    %>
                 </div>
             </div>
         </div>
@@ -151,15 +134,6 @@
 </div>
 
 <script>
-    function toggleSubMenu(id) {
-        var subMenu = document.getElementById(id);
-        if (subMenu.style.display === "none") {
-            subMenu.style.display = "block";
-            showContent('accountOverview');
-        } else {
-            subMenu.style.display = "none";
-        }
-    }
 
     function showContent(id) {
         var contents = document.getElementsByClassName('content-section');
@@ -175,6 +149,6 @@
         event.target.classList.add('active');
     }
 </script>
-<%@include file="../footer.jsp" %>
+<%@ include file="../footer.jsp" %>
 </body>
 </html>
